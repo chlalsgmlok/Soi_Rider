@@ -1,0 +1,142 @@
+/*
+ * INTRO layout: the 3D win stand stays visible on the left; chapter tag top-left, 렉 이모 caption bottom-left,
+ * key hints bottom-centre, the gram phone docked right (cut by the bottom edge, as if held). Authored at 1280×720.
+ */
+.screen--intro { overflow: hidden; }
+.intro { position: absolute; inset: 0; }
+.intro__shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent 40%, color-mix(in srgb, var(--c-ink) 46%, transparent) 82%),
+    radial-gradient(52% 42% at 0% 0%, color-mix(in srgb, var(--c-ink) 50%, transparent), transparent 72%),
+    radial-gradient(48% 38% at 0% 100%, color-mix(in srgb, var(--c-ink) 52%, transparent), transparent 72%);
+}
+
+/* ── chapter tag ── */
+.intro-chapter {
+  position: absolute;
+  top: var(--safe-t);
+  left: var(--safe-l);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  zoom: var(--ui-zoom);
+  color: var(--t-on-dark);
+}
+.intro-chapter__kicker {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font: 700 13px/1 var(--font-display);
+  letter-spacing: 0.26em;
+  color: var(--c-cyan);
+  text-shadow: var(--shadow-text);
+}
+.intro-chapter__kicker .t-thai { font-weight: 500; letter-spacing: 0.02em; color: var(--t-on-dark-2); }
+.intro-chapter__title {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font: 800 italic 64px/0.95 var(--font-display);
+  letter-spacing: var(--tracking-logo);
+  text-shadow: var(--shadow-text-strong);
+}
+.intro-chapter__no { color: var(--c-cyan); }
+.intro-chapter__city { font-size: 36px; font-weight: 700; }
+.intro-chapter__rule {
+  width: 300px;
+  height: 3px;
+  margin: 6px 0 10px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--c-cyan) 0 52px, rgba(255, 255, 255, 0.8) 52px);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.28);
+}
+.intro-chapter__chips { display: flex; flex-wrap: wrap; gap: 8px; max-width: 420px; }
+
+/* ── 렉 이모 caption ── */
+.intro-caption {
+  position: absolute;
+  left: var(--safe-l);
+  bottom: var(--safe-b);
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  max-width: 440px;
+  zoom: var(--ui-zoom);
+}
+.intro-caption .avatar {
+  --avatar: 58px;
+  background: linear-gradient(160deg, var(--c-amber-hi), var(--c-amber));
+  box-shadow: 0 0 0 3px var(--c-white), 0 0 0 5px var(--c-amber-deep), 0 8px 16px rgba(0, 0, 0, 0.35);
+}
+.intro-caption__body {
+  position: relative;
+  margin-bottom: 18px;
+  padding: 10px 16px 12px;
+  border-radius: 16px 16px 16px 4px;
+  background: var(--c-cream);
+  color: var(--c-ink);
+  box-shadow: 0 3px 0 var(--c-cream-3), var(--shadow-card);
+}
+.intro-caption__who { display: flex; align-items: baseline; gap: 8px; font-size: 11.5px; font-weight: 600; color: var(--t-on-light-3); }
+.intro-caption__who b { font-size: 13px; font-weight: 800; color: var(--c-amber-deep); }
+.intro-caption__line { margin-top: 3px; font: 700 15px/1.42 var(--font-ui); }
+
+/* ── key hints ── */
+.intro-keys {
+  position: absolute;
+  bottom: var(--safe-b);
+  right: calc(max(var(--safe-r), 9vw) + 360px * var(--ui-zoom) + 28px);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 7px 16px 7px 8px;
+  border-radius: var(--r-pill);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--t-on-dark-2);
+  white-space: nowrap;
+}
+.intro-keys__group { display: inline-flex; align-items: center; gap: 5px; }
+.intro-keys__group span:last-child { margin-left: 3px; }
+
+/*
+ * ── phone dock ── bounded by the window: the handset's bottom edge is held just below the screen, so on short screens
+ * the phone ends at the edge and its call list scrolls instead of running off-screen (intro-phone.css)
+ */
+.intro-dock {
+  position: absolute;
+  top: max(12px, 3.3vh);
+  bottom: calc(-30px * var(--ui-zoom));
+  right: max(var(--safe-r), 9vw);
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .intro-keys { display: none; }
+}
+
+@media (max-width: 820px) {
+  .intro-keys { display: none; }
+  .intro-dock { right: var(--safe-r); }
+  .intro-caption { max-width: calc(100vw - 360px * var(--ui-zoom) - 48px); }
+}
+
+/* narrow or phone-height windows: the hints would collide with 렉 이모's caption (touch players see keycaps on cards) */
+@media (max-width: 900px), (max-height: 460px) {
+  .intro-keys { display: none; }
+}
+
+/* phone portrait: chapter tag, 렉 이모 under it, the handset centred below with its call list scrolling */
+@media (orientation: portrait) and (max-width: 760px) {
+  .intro__shade {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--c-ink) 64%, transparent) 0%, color-mix(in srgb, var(--c-ink) 28%, transparent) 34%, color-mix(in srgb, var(--c-ink) 46%, transparent) 100%);
+  }
+  .intro-caption { top: calc(var(--safe-t) + 150px); bottom: auto; max-width: 440px; }
+  .intro-dock { top: calc(var(--safe-t) + 196px); left: 50%; right: auto; translate: -50% 0; }
+}

@@ -1,0 +1,8 @@
+/* Component library aggregate — every class is documented in docs/DESIGN_SYSTEM.md §6. */
+@import './components/buttons.css';
+@import './components/chips.css';
+@import './components/surfaces.css';
+@import './components/controls.css';
+@import './components/phone.css';
+@import './components/receipt.css';
+@import './components/feedback.css';

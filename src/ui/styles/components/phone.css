@@ -1,0 +1,165 @@
+/*
+ * .phone — the rider's handset running the gram app (Intro screen full size, HUD mini-phone, story stills).
+ * Structure: .phone > .phone__screen > [.phone__status] [.gram-bar] [content…]   + .phone__island
+ * Size with --phone-w (height follows a 9:19.5 ratio unless .phone--free).
+ */
+.phone {
+  --phone-w: 320px;
+  --phone-r: 44px;
+  --phone-bezel: 10px;
+  position: relative;
+  width: var(--phone-w);
+  aspect-ratio: 9 / 19.5;
+  padding: var(--phone-bezel);
+  border-radius: var(--phone-r);
+  background: linear-gradient(150deg, #3a4157 0%, #1b1f2b 45%, #0e1118 100%);
+  box-shadow:
+    inset 0 0 0 1.5px rgba(255, 255, 255, 0.16),
+    inset 0 0 0 4px #0b0d13,
+    0 2px 0 rgba(255, 255, 255, 0.06),
+    0 40px 80px rgba(6, 8, 14, 0.55),
+    0 10px 24px rgba(6, 8, 14, 0.35);
+  pointer-events: auto;
+}
+.phone--free { aspect-ratio: auto; }
+
+/* side buttons */
+.phone::before,
+.phone::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #262b3a, #3d455d);
+}
+.phone::before { left: -3px; top: 22%; height: 9%; }
+.phone::after { right: -3px; top: 28%; height: 14%; }
+
+.phone__screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: calc(var(--phone-r) - var(--phone-bezel));
+  overflow: hidden;
+  background: var(--c-cream);
+  color: var(--c-ink);
+  isolation: isolate;
+}
+/* subtle glass reflection */
+.phone__screen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(125deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0) 32%);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.phone__island {
+  position: absolute;
+  top: calc(var(--phone-bezel) + 9px);
+  left: 50%;
+  width: 30%;
+  height: 22px;
+  translate: -50% 0;
+  border-radius: var(--r-pill);
+  background: #07080c;
+  z-index: 6;
+}
+
+.phone__status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  padding: 12px 24px 0;
+  font: 600 13px/1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+  flex: none;
+}
+.phone__status-icons { display: inline-flex; gap: 5px; align-items: center; }
+.phone__status-icons .icon { width: 14px; height: 14px; }
+
+/* ── gram app chrome ── */
+.gram-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 16px 10px;
+  background: var(--c-cyan);
+  color: var(--c-ink);
+  flex: none;
+}
+.gram-logo {
+  display: inline-flex;
+  align-items: baseline;
+  font: 800 italic 22px/1 var(--font-display);
+  letter-spacing: -0.04em;
+  color: var(--c-ink);
+}
+.gram-logo::after {
+  content: '';
+  width: 0.28em;
+  height: 0.28em;
+  margin-left: 0.08em;
+  border-radius: 50%;
+  background: var(--c-coral);
+  box-shadow: 0 0 0 2px var(--c-cyan);
+  align-self: flex-start;
+  translate: 0 0.1em;
+}
+.gram-logo--light { color: #fff; }
+.gram-logo--sm { font-size: 15px; }
+
+.gram-card {
+  position: relative;
+  margin: 8px 12px;
+  padding: 12px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06), 0 6px 14px rgba(70, 50, 20, 0.08);
+}
+.gram-card.is-selected { box-shadow: 0 0 0 2.5px var(--c-cyan-deep), 0 8px 18px rgba(18, 181, 166, 0.25); }
+
+/* avatar circle used in the phone and HUD (svg inside, see components/avatar.ts) */
+.avatar {
+  --avatar: 44px;
+  position: relative;
+  width: var(--avatar);
+  height: var(--avatar);
+  flex: none;
+  border-radius: 50%;
+  overflow: hidden;
+  background: linear-gradient(160deg, #c6f5ee, #8fe3d8);
+  box-shadow: 0 0 0 2px #fff, 0 2px 6px rgba(0, 0, 0, 0.18);
+}
+.avatar svg { width: 100%; height: 100%; }
+.avatar--sm { --avatar: 32px; }
+.avatar--lg { --avatar: 64px; }
+
+/* home indicator */
+.phone__home {
+  width: 34%;
+  height: 5px;
+  margin: 6px auto 8px;
+  border-radius: var(--r-pill);
+  background: rgba(21, 24, 33, 0.85);
+  flex: none;
+}
+
+/* ── mini (HUD): smaller bezel/radius, no status bar ── */
+.phone--mini {
+  --phone-w: 236px;
+  --phone-r: 26px;
+  --phone-bezel: 6px;
+  aspect-ratio: auto;
+  box-shadow:
+    inset 0 0 0 1.5px rgba(255, 255, 255, 0.18),
+    inset 0 0 0 3px #0b0d13,
+    0 14px 30px rgba(6, 8, 14, 0.45),
+    0 3px 0 rgba(0, 0, 0, 0.25);
+}
+.phone--mini::before,
+.phone--mini::after { display: none; }

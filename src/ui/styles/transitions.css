@@ -1,0 +1,96 @@
+/*
+ * Screen transitions (src/ui/core/transition.ts).
+ * Crosswalk Wipe: 6 slanted (12°) zebra bars sweep in from the left over asphalt, hold one beat, sweep out to the right.
+ * Fade: ink veil in/out.
+ */
+.wipe {
+  position: absolute;
+  inset: 0;
+  pointer-events: auto;
+  overflow: hidden;
+}
+.wipe[hidden] { display: none; }
+
+.wipe__bar {
+  position: absolute;
+  top: -8%;
+  bottom: -8%;
+  /* each bar = one zebra stripe + one asphalt gap; bars overlap slightly so the screen is fully covered */
+  width: calc(100% / 6 + 26vh);
+  left: calc(var(--i) * 100% / 6 - 13vh);
+  transform: translateX(-130vw) skewX(-12deg);
+  background:
+    linear-gradient(90deg,
+      var(--c-asphalt-dark) 0 22%,
+      var(--c-curb-white) 22% 78%,
+      var(--c-asphalt-dark) 78% 100%);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+  will-change: transform;
+}
+/* asphalt grain + stripe wear */
+.wipe__bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(0, 0, 0, 0.06) 0 2px, transparent 3px) 0 0 / 23px 31px,
+    radial-gradient(circle at 70% 60%, rgba(255, 255, 255, 0.05) 0 1.5px, transparent 2.5px) 0 0 / 17px 19px;
+  mix-blend-mode: multiply;
+}
+.wipe__bar:nth-child(even) {
+  background:
+    linear-gradient(90deg,
+      var(--c-asphalt) 0 22%,
+      #fbf7ee 22% 78%,
+      var(--c-asphalt) 78% 100%);
+}
+
+/* rider zipping across the zebra (with a cyan route streak) */
+.wipe__rider {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--c-ink);
+  color: var(--c-cyan);
+  box-shadow: 0 0 0 4px var(--c-cyan), 0 10px 24px rgba(0, 0, 0, 0.35);
+  transform: translate(-12vw, -50%);
+  will-change: transform;
+}
+.wipe__rider::before {
+  content: '';
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  width: 34vw;
+  height: 6px;
+  margin-top: -3px;
+  border-radius: 3px;
+  background: repeating-linear-gradient(90deg, transparent 0 14px, var(--c-cyan) 14px 40px);
+  -webkit-mask: linear-gradient(90deg, transparent, #000 70%);
+  mask: linear-gradient(90deg, transparent, #000 70%);
+}
+.fade-veil {
+  position: absolute;
+  inset: 0;
+  background: var(--c-ink);
+  opacity: 0;
+  pointer-events: auto;
+}
+.fade-veil[hidden] { display: none; }
+
+/* screen-level entrance helpers (router applies data-enter on reveal) */
+.screen[data-enter='rise'] { animation: screen-rise var(--d-card) var(--ease-out) both; }
+.screen[data-enter='pop'] { animation: screen-pop var(--d-card) var(--ease-pop) both; }
+.screen[data-enter='fade'] { animation: screen-fade var(--d-chip) var(--ease-out) both; }
+@keyframes screen-rise { from { opacity: 0; transform: translateY(18px); } }
+@keyframes screen-pop { from { opacity: 0; transform: scale(0.94); } }
+@keyframes screen-fade { from { opacity: 0; } }
+
+/* staggered children: add .stagger to a container; children get --n via JS (core/animate.ts stagger()) or nth-child */
+.stagger > * { animation: stagger-in var(--d-card) var(--ease-out) both; animation-delay: calc(var(--n, 0) * 45ms + 60ms); }
+@keyframes stagger-in { from { opacity: 0; transform: translateY(12px) scale(0.98); } }

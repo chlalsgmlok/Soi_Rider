@@ -1,0 +1,149 @@
+/* Title screen — transparent centre over the 3D diorama; chrome hugs the left edge and the corners. */
+.title { position: absolute; inset: 0; }
+
+/* soft ink scrims keep the left column and corners legible on the bright golden-hour scene */
+.title__scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--c-ink) 68%, transparent) 0%, color-mix(in srgb, var(--c-ink) 36%, transparent) 28%, transparent 52%),
+    linear-gradient(0deg, color-mix(in srgb, var(--c-ink) 52%, transparent) 0%, transparent 24%),
+    linear-gradient(180deg, color-mix(in srgb, var(--c-ink) 30%, transparent) 0%, transparent 16%);
+}
+
+.title__brand {
+  position: absolute;
+  left: 56px;
+  top: 40px;
+  transform-origin: 0 0;
+  transition: transform var(--d-screen) var(--ease-out);
+}
+.title[data-state='gate'] .title__brand { transform: translateY(14px) scale(1.1); }
+
+/* ── logo lockup ── */
+.title-logo { display: grid; justify-items: start; gap: 4px; }
+.title-logo__plate { rotate: -3deg; margin: 0 0 10px 4px; }
+.title-logo__word {
+  display: flex;
+  gap: 0.2em;
+  margin: 0;
+  font: italic 800 112px / 0.9 var(--font-display);
+  letter-spacing: var(--tracking-logo);
+  white-space: nowrap;
+}
+.title-logo__soi {
+  color: var(--c-white);
+  text-shadow:
+    0 1px 0 var(--c-ink-3), 0 2px 0 var(--c-ink-3), 0 3px 0 var(--c-ink-2), 0 4px 0 var(--c-ink-2),
+    0 5px 0 var(--c-ink), 0 6px 0 var(--c-ink), 0 7px 0 var(--c-ink), 0 16px 26px rgba(0, 0, 0, 0.45);
+}
+.title-logo__rider {
+  color: var(--c-cyan);
+  text-shadow:
+    0 1px 0 var(--c-cyan-deep), 0 2px 0 var(--c-cyan-deep), 0 3px 0 var(--c-cyan-ink), 0 4px 0 var(--c-cyan-ink),
+    0 5px 0 var(--c-ink), 0 6px 0 var(--c-ink), 0 7px 0 var(--c-ink), 0 16px 26px rgba(0, 0, 0, 0.45);
+}
+
+.title-logo__road { position: relative; width: 488px; height: 34px; margin-top: 12px; }
+.title-logo__road .crosswalk {
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 60%;
+  height: 14px;
+  border-radius: 4px;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.3);
+}
+.title-logo__route {
+  position: absolute;
+  left: calc(60% + 10px);
+  right: 30px;
+  top: 15px;
+  height: 4px;
+  border-radius: 2px;
+  background: repeating-linear-gradient(90deg, var(--c-cyan) 0 14px, transparent 14px 24px);
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.4));
+}
+.title-logo__puck {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--c-ink);
+  color: var(--c-cyan);
+  box-shadow: 0 0 0 3px var(--c-cyan), 0 6px 14px rgba(0, 0, 0, 0.4);
+}
+.title-logo__tag { display: flex; align-items: baseline; gap: 12px; margin-top: 8px; text-shadow: var(--shadow-text-strong); }
+.title-logo__ko { font: 800 21px / 1.2 var(--font-ui); letter-spacing: -0.01em; color: var(--c-white); }
+.title-logo__th { font: 500 16px / 1.2 var(--font-display); color: var(--c-sun); }
+
+/* ── menu ── */
+.title__menu { position: absolute; left: 56px; bottom: 60px; display: flex; gap: 16px; width: 372px; }
+.title__menu .curb-divider--v { width: 8px; border-radius: 4px; }
+.title__menu-col { flex: 1 1 auto; display: flex; flex-direction: column; gap: 14px; }
+.title__menu-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.title__start { justify-content: flex-start; padding-right: 22px; }
+.title__start .btn__label { flex: 1 1 auto; align-items: flex-start; padding-left: 4px; }
+.title__start .btn__sub { font-family: var(--font-display); font-weight: 600; letter-spacing: 0.02em; opacity: 0.78; }
+
+/* ── top right: wallets + record ── */
+.title__top { position: absolute; right: 28px; top: 24px; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+.title__record { height: 30px; }
+
+/* ── press any key ── */
+.title__prompt {
+  position: absolute;
+  left: 50%;
+  bottom: 88px;
+  translate: -50% 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 24px 12px 14px;
+  border-radius: var(--r-pill);
+  background: var(--glass-bg-strong);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  color: var(--t-on-dark);
+  box-shadow: var(--shadow-float), var(--inner-hi);
+  cursor: pointer;
+  animation: title-pulse 1.8s var(--ease-inout) infinite;
+}
+.title__prompt:focus-visible { outline-offset: 5px; }
+.title__prompt-text { display: grid; gap: 3px; text-align: left; }
+.title__prompt-ko { font: 800 21px / 1.1 var(--font-ui); letter-spacing: -0.01em; }
+.title__prompt-en { font: 600 11px / 1 var(--font-display); letter-spacing: var(--tracking-caps); color: var(--c-cyan); }
+@keyframes title-pulse {
+  0%, 100% { transform: scale(1); box-shadow: var(--shadow-float), 0 0 0 0 color-mix(in srgb, var(--c-cyan) 45%, transparent); }
+  50% { transform: scale(1.045); box-shadow: var(--shadow-float), 0 0 0 12px color-mix(in srgb, var(--c-cyan) 0%, transparent); }
+}
+
+/* ── version / credits ── */
+.title__foot {
+  position: absolute;
+  right: 28px;
+  bottom: 20px;
+  display: flex;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--t-on-dark-2);
+  text-shadow: var(--shadow-text-strong);
+}
+.title__foot > span + span::before { content: '·'; margin-right: 10px; opacity: 0.6; }
+.title__version { color: var(--t-on-dark); letter-spacing: 0.04em; }
+
+@media (max-height: 560px) {
+  .title__brand { top: 18px; left: 32px; }
+  .title-logo__word { font-size: 80px; }
+  .title-logo__road { width: 360px; }
+  .title__menu { left: 32px; bottom: 24px; width: 340px; }
+  .title__prompt { bottom: 40px; }
+  .title__foot { bottom: 8px; }
+}

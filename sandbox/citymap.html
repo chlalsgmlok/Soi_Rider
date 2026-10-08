@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>City Map</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #20251f; color: #f4f1e8; font: 500 13px "Pretendard", "Malgun Gothic", system-ui, sans-serif; }
+  canvas { display: block; cursor: grab; }
+  #panel { position: fixed; top: 12px; right: 12px; width: 290px; padding: 12px 14px; border-radius: 12px; background: rgba(21,24,33,.78); backdrop-filter: blur(10px); }
+  #panel h1 { margin: 0 0 4px; font-size: 16px; font-weight: 800; letter-spacing: -.01em; }
+  #panel .th { color: #3ee6d4; font-size: 12px; }
+  #panel table { width: 100%; margin-top: 8px; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  #panel td { padding: 1px 0; }
+  #panel td:last-child { text-align: right; color: #ffc46b; }
+  #panel .legend span { display: inline-block; width: 10px; height: 10px; margin: 0 4px 0 8px; border-radius: 2px; vertical-align: -1px; }
+  #panel .keys { margin-top: 8px; color: #aab; font-size: 11px; line-height: 1.5; }
+</style>
+</head>
+<body>
+<canvas id="map"></canvas>
+<div id="panel"></div>
+<script type="module" src="/src/sandbox/citymap.ts"></script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+/*
+ * Results vocabulary: .receipt (gram paper slip with zig-zag edges), .grade-stamp (rubber stamp S..F), .stars (rating).
+ * .receipt is the shadow wrapper; .receipt__paper carries the zig-zag mask (a mask would clip the drop shadow).
+ */
+.receipt {
+  --zz: 9px;
+  position: relative;
+  filter: drop-shadow(0 16px 26px rgba(10, 12, 20, 0.38)) drop-shadow(0 2px 0 rgba(0, 0, 0, 0.12));
+}
+.receipt__paper {
+  position: relative;
+  padding: calc(var(--zz) + 18px) 22px calc(var(--zz) + 20px);
+  color: var(--c-ink);
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.7), transparent 40%),
+    repeating-linear-gradient(0deg, rgba(150, 120, 70, 0.035) 0 1px, transparent 1px 4px),
+    var(--c-cream);
+  -webkit-mask:
+    conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / calc(var(--zz) * 2) 51% repeat-x,
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(var(--zz) * 2) 51% repeat-x;
+  mask:
+    conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / calc(var(--zz) * 2) 51% repeat-x,
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(var(--zz) * 2) 51% repeat-x;
+}
+.receipt__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+}
+.receipt__meta { font: 500 11px/1.4 var(--font-display); color: var(--t-on-light-2); letter-spacing: 0.04em; text-transform: uppercase; }
+.receipt__sep {
+  height: 0;
+  margin: 10px 0;
+  border: 0;
+  border-top: 2px dashed var(--c-paper-line);
+}
+.receipt__row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 5px 0;
+  font-size: 14px;
+}
+.receipt__label { font-weight: 700; white-space: nowrap; }
+.receipt__label small { margin-left: 6px; font-weight: 500; font-size: 11px; color: var(--t-on-light-3); }
+.receipt__leader {
+  flex: 1 1 auto;
+  min-width: 12px;
+  border-bottom: 2px dotted var(--c-paper-line);
+  translate: 0 -4px;
+}
+.receipt__value {
+  font: 700 15px/1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.receipt__value.is-neg { color: var(--c-coral-deep); }
+.receipt__value.is-pos { color: var(--c-leaf-deep); }
+.receipt__row.is-hidden { visibility: hidden; }
+.receipt__row.is-in { animation: receipt-row-in var(--d-card) var(--ease-out) both; }
+@keyframes receipt-row-in { from { opacity: 0; transform: translateY(6px); } }
+.receipt__total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-top: 6px;
+}
+.receipt__total-label { font: 800 13px/1 var(--font-display); letter-spacing: var(--tracking-caps); text-transform: uppercase; }
+.receipt__total-value { font: 800 40px/1 var(--font-display); font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+.receipt__barcode {
+  height: 34px;
+  margin-top: 14px;
+  opacity: 0.85;
+  background: repeating-linear-gradient(90deg, var(--c-ink) 0 2px, transparent 2px 4px, var(--c-ink) 4px 5px, transparent 5px 8px, var(--c-ink) 8px 11px, transparent 11px 12px);
+}
+
+/* ── grade stamp ── */
+.grade-stamp {
+  --g: var(--grade-s);
+  --size: 132px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  color: var(--g);
+  border: calc(var(--size) * 0.045) solid var(--g);
+  box-shadow: inset 0 0 0 calc(var(--size) * 0.03) transparent, inset 0 0 0 calc(var(--size) * 0.055) var(--g);
+  transform: rotate(-12deg);
+  mix-blend-mode: multiply;
+  -webkit-mask: var(--stamp-grain) center / 180px 180px;
+  mask: var(--stamp-grain) center / 180px 180px;
+  --stamp-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 -5 0 0 0 3.55'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.grade-stamp__letter {
+  font: 800 italic calc(var(--size) * 0.6) / 1 var(--font-display);
+  letter-spacing: -0.04em;
+  translate: -0.03em 0.02em;
+}
+.grade-stamp__ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  font: 700 calc(var(--size) * 0.085) / 1 var(--font-display);
+  letter-spacing: 0.18em;
+  fill: currentColor;
+}
+.grade-stamp[data-grade='S'] { --g: var(--grade-s); }
+.grade-stamp[data-grade='A'] { --g: var(--grade-a); }
+.grade-stamp[data-grade='B'] { --g: var(--grade-b); }
+.grade-stamp[data-grade='C'] { --g: var(--grade-c); }
+.grade-stamp[data-grade='D'] { --g: var(--grade-d); }
+.grade-stamp[data-grade='F'] { --g: var(--grade-f); }
+.grade-stamp--sm { --size: 56px; }
+.grade-stamp--lg { --size: 180px; }
+/* on dark backgrounds multiply would vanish */
+.grade-stamp--on-dark { mix-blend-mode: normal; filter: drop-shadow(0 0 10px color-mix(in srgb, var(--g) 50%, transparent)); }
+
+/* ── star rating ── */
+.stars { display: inline-flex; gap: 2px; color: var(--c-mango); }
+.stars .icon { width: 18px; height: 18px; filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.2)); }
+.stars .is-empty { color: rgba(21, 24, 33, 0.16); }
+.stars--on-dark .is-empty { color: rgba(255, 255, 255, 0.2); }
+.stars--lg .icon { width: 28px; height: 28px; }

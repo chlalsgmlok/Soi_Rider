@@ -1,0 +1,7 @@
+{
+  "tool_name": "mcp__oh-my-hwclaude__hashline_edit",
+  "tool_input_preview": "{\"file_path\":\"C:/Users/chlal/Desktop/cursorworkspace/playground/apps/soi-rider/src/weather/fx/rain/rain-streaks.ts\",\"edits\":[{\"op\":\"replace\",\"pos\":\"31#MY\",\"lines\":[\"  private geometry = new InstancedB...",
+  "error": "Error: Edit validation failed:\nHash mismatch at line 31: expected #MY, got #XS.\nCurrent content at line 31: \"  private readonly geometry = new InstancedBufferGeometry();\"\nDid you mean line 86? Content: \"    (u.uCamVel.value as Vector3).copy(f.camVel);\"\nCorrect reference: 86#MY\n\nHash mismatch at line 36: expected #YM, got #PZ.\nCurrent content at line 36: \"  constructor(capacity: number, private readonly rng: Rng) {\"\nThe file may have been modified since you last read it.\nPlease re-read the file w...",
+  "timestamp": "2026-10-07T10:39:16.422Z",
+  "retry_count": 1
+}

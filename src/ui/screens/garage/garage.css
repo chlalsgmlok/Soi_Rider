@@ -1,0 +1,312 @@
+/* Garage — right-docked panel (≤ 460 px); the left side stays transparent for the 3D turntable. */
+.garage { position: absolute; inset: 0; --g-panel-w: 460px; --g-gap: 20px; }
+
+/* drag surface: everything left of the panel */
+.g-turn {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: calc(var(--g-panel-w) + var(--g-gap) * 2);
+  cursor: grab;
+  touch-action: none;
+}
+.g-turn.is-dragging { cursor: grabbing; }
+
+/* ── showroom caption ── */
+.g-show {
+  position: absolute;
+  left: 40px;
+  bottom: 36px;
+  display: grid;
+  justify-items: start;
+  gap: 10px;
+  max-width: calc(100% - var(--g-panel-w) - 120px);
+  pointer-events: none;
+}
+.g-show__bike {
+  font: italic 800 54px / 0.95 var(--font-display);
+  letter-spacing: var(--tracking-logo);
+  color: var(--c-white);
+  text-shadow: 0 2px 0 var(--c-ink-3), 0 4px 0 var(--c-ink-2), 0 6px 0 var(--c-ink), 0 14px 22px rgba(0, 0, 0, 0.45);
+}
+.g-show__parts { display: flex; flex-wrap: wrap; gap: 6px; }
+.g-show__part {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 11px 0 5px;
+  border-radius: var(--r-pill);
+  background: var(--glass-bg-strong);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  font: 700 12px / 1 var(--font-ui);
+  color: var(--t-on-dark);
+}
+.g-show__dot { width: 18px; height: 18px; border-radius: 50%; background: var(--swatch); box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px var(--c-white); }
+
+.g-hint {
+  position: absolute;
+  top: 24px;
+  left: calc((100% - var(--g-panel-w) - var(--g-gap) * 2) / 2);
+  translate: -50% 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: var(--r-pill);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  font: 700 13px / 1 var(--font-ui);
+  color: var(--t-on-dark);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.g-hint .icon { color: var(--c-cyan); }
+
+/* ── licence plate ── */
+.g-plate {
+  display: inline-grid;
+  justify-items: center;
+  gap: 2px;
+  min-width: 150px;
+  padding: 6px 18px 7px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, var(--c-white), var(--c-cream));
+  color: var(--c-ink);
+  box-shadow: inset 0 0 0 2px var(--c-ink), inset 0 0 0 4px var(--c-white), 0 3px 0 rgba(0, 0, 0, 0.35), 0 10px 22px rgba(0, 0, 0, 0.3);
+}
+.g-plate__top { font: 600 11px / 1 var(--font-display); }
+.g-plate__name { font: 800 28px / 1 var(--font-display); letter-spacing: 0.05em; white-space: nowrap; }
+.g-plate__bottom { font: 500 10px / 1 var(--font-display); }
+.g-plate--lg { min-width: 240px; padding: 10px 28px 11px; border-radius: 10px; }
+.g-plate--lg .g-plate__top { font-size: 14px; }
+.g-plate--lg .g-plate__name { font-size: 44px; }
+.g-plate--lg .g-plate__bottom { font-size: 13px; }
+.g-plate.is-long .g-plate__name { font-size: 22px; }
+.g-plate--lg.is-long .g-plate__name { font-size: 32px; }
+
+/* ── docked panel ── */
+.g-panel {
+  position: absolute;
+  top: var(--g-gap);
+  right: var(--g-gap);
+  bottom: var(--g-gap);
+  width: min(var(--g-panel-w), calc(100% - var(--g-gap) * 2));
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--r-sheet);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--c-ink-2) 92%, transparent), color-mix(in srgb, var(--c-ink) 95%, transparent));
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-float), var(--inner-hi);
+  color: var(--t-on-dark);
+  overflow: hidden;
+  pointer-events: auto;
+}
+.g-panel__head { display: grid; gap: 14px; padding: 16px 18px 12px; }
+.g-panel__head .menu-head { gap: 10px; }
+.g-panel__head .menu-head__plate { min-width: 0; padding: 5px 12px 6px; }
+.g-panel__head .wallet { height: 34px; font-size: 15px; padding-right: 11px; }
+.g-panel__head .wallet .coin { font-size: 19px; }
+.g-panel__head .wallet__icon { width: 24px; height: 24px; }
+
+/* stacked icon + label tabs fit five across 420 px */
+.g-tabs .tab-strip { border-radius: 16px; }
+.g-tabs .tab-strip__ink { border-radius: 12px; }
+.g-tabs .tab { flex-direction: column; gap: 3px; height: 52px; padding: 0 4px; border-radius: 12px; font-size: 12px; }
+.g-tabs .tab .icon { width: 19px; height: 19px; }
+
+.g-body { flex: 1 1 auto; min-height: 0; padding: 6px 18px 18px; }
+.g-pane { display: grid; gap: 14px; }
+.g-pane > .section-head { margin: 6px 0 -4px; }
+
+/* ── item cards ── */
+.g-items--tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.g-items--rows { display: grid; gap: 10px; }
+.g-item {
+  position: relative;
+  border-radius: var(--r-card);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.03));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  transition: box-shadow var(--d-chip) var(--ease-out), background-color var(--d-chip);
+}
+@media (hover: hover) { .g-item:hover { background-color: rgba(255, 255, 255, 0.05); } }
+.g-item.is-selected {
+  background-color: color-mix(in srgb, var(--c-cyan) 10%, transparent);
+  box-shadow: 0 0 0 3px var(--c-cyan), 0 0 0 7px color-mix(in srgb, var(--c-cyan) 22%, transparent), var(--shadow-card);
+}
+.g-item__pick {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 10px;
+  border-radius: inherit;
+  color: var(--t-on-dark);
+  text-align: center;
+}
+.g-item__pick:focus-visible { outline-offset: -3px; }
+.g-item--row .g-item__pick { flex-direction: row; gap: 14px; padding: 12px 14px; text-align: left; }
+.g-item__text { display: grid; justify-items: center; gap: 5px; min-width: 0; }
+.g-item--row .g-item__text { justify-items: start; }
+.g-item__name { font: 800 15px / 1.2 var(--font-ui); letter-spacing: -0.01em; }
+.g-item--row .g-item__name { font: italic 800 20px / 1 var(--font-display); letter-spacing: 0; }
+.g-item__desc { font-size: 12px; line-height: 1.35; color: var(--t-on-dark-2); }
+/* pillion seat gear: the passenger-comfort perk as a small cyan badge */
+.g-item__perk {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  height: 18px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--c-cyan) 22%, transparent);
+  color: var(--c-cyan-hi, var(--c-cyan));
+  font: 800 11px / 1 var(--font-ui);
+  letter-spacing: -0.01em;
+}
+
+.g-item__state {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 22px;
+  padding: 0 9px;
+  border-radius: var(--r-pill);
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--t-on-dark-2);
+  font: 700 12px / 1 var(--font-ui);
+}
+.g-item__state .icon { width: 13px; height: 13px; }
+.g-item__state[data-state='equipped'] { background: var(--c-cyan); color: var(--c-ink); }
+.g-item__state[data-state='locked'] { background: var(--c-sun); color: var(--c-ink); font-family: var(--font-display); padding-left: 3px; }
+.g-item__state .coin { font-size: 15px; }
+.g-item.is-locked .menu-art::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--c-ink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M7 10V7.5a5 5 0 0 1 10 0V10h.5A1.5 1.5 0 0 1 19 11.5v8A1.5 1.5 0 0 1 17.5 21h-11A1.5 1.5 0 0 1 5 19.5v-8A1.5 1.5 0 0 1 6.5 10H7zm2.2 0h5.6V7.5a2.8 2.8 0 0 0-5.6 0V10z'/%3E%3C/svg%3E") center / 11px no-repeat;
+  box-shadow: 0 0 0 2px var(--c-white);
+}
+.g-item__buy { padding: 0 10px 10px; }
+.g-item--row .g-item__buy { padding: 0 14px 12px; }
+
+/* ── colour rows ── */
+.g-swatches { display: grid; gap: 10px; margin-top: 4px; }
+.g-swatches .section-head { margin-bottom: 0; }
+.g-swatches__name { font-size: 12px; font-weight: 700; color: var(--t-on-dark-2); }
+.g-swatches__grid { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px 4px; padding: 4px 0 2px; }
+.g-swatches .swatch { width: 40px; height: 40px; }
+.g-swatches .swatch-cell { position: relative; min-height: 54px; }
+.g-swatches .swatch-cell .menu-sold { top: 20px; z-index: 1; padding: 2px 6px 3px; border-width: 2px; border-radius: 6px; font-size: 11px; }
+.g-swatches .swatch-cell.is-worn::after {
+  content: '장착';
+  font: 700 10px / 1 var(--font-ui);
+  color: var(--c-cyan);
+}
+.g-swatches.is-disabled .g-swatches__grid { opacity: 0.35; filter: grayscale(0.6); }
+.g-swatches__note { font-size: 12px; color: var(--t-on-dark-3); }
+.g-swatches__buy {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px 10px 12px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.28);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c-sun) 35%, transparent);
+}
+.g-swatches__dot { width: 28px; height: 28px; flex: none; border-radius: 50%; background: var(--swatch); box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px var(--c-white); }
+.g-swatches__buy-text { display: grid; gap: 2px; flex: 1 1 auto; min-width: 0; }
+.g-swatches__buy-text b { font: 800 14px / 1.2 var(--font-ui); }
+.g-swatches__buy-text span { font-size: 11px; color: var(--t-on-dark-2); }
+
+/* ── bike stats ── */
+/* the spec card rides in a frosted band pinned flush to the body's top edge (it covers the 6 px top padding and the
+   18 px gutters, so nothing scrolls past its rounded corners); deltas stay visible while a bike's buy row is open */
+.g-stick {
+  position: sticky;
+  top: -6px;
+  z-index: 2;
+  margin: -6px -18px 0;
+  padding: 6px 18px 8px;
+  background: color-mix(in srgb, var(--c-ink-2) 94%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 12px 14px -14px rgba(0, 0, 0, 0.8);
+}
+.g-body:has(> .g-pane[data-pane='bike']:not([hidden])) { scroll-padding-top: calc(var(--g-stick, 0px) + 4px); }
+.g-stats { display: grid; gap: 10px; padding: 14px 14px 12px; border-radius: var(--r-card); background: rgba(0, 0, 0, 0.24); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05); }
+.g-stats .section-head { margin-bottom: 0; }
+.g-stats__bars { display: grid; gap: 9px; }
+.g-stats .stat-bar { grid-template-columns: 62px minmax(0, 1fr) 64px; }
+.g-stats__compare { font-size: 12px; font-weight: 700; color: var(--t-on-dark-3); }
+.g-stats__compare.is-compare { color: var(--c-amber-hi); }
+.g-stats .stat-bar.is-inverse.is-up .stat-bar__delta { background: repeating-linear-gradient(135deg, var(--c-coral-hi) 0 4px, var(--c-coral) 4px 8px); }
+.g-stats .stat-bar.is-inverse.is-down .stat-bar__delta { background: repeating-linear-gradient(135deg, var(--c-leaf-hi) 0 4px, var(--c-leaf) 4px 8px); }
+.g-stats .stat-bar.is-inverse.is-up .stat-bar__value { color: var(--c-coral-hi); }
+.g-stats .stat-bar.is-inverse.is-down .stat-bar__value { color: var(--c-leaf-hi); }
+
+/* ── nickname ── */
+.g-nick { display: grid; gap: 12px; }
+.g-nick .section-head { margin-bottom: 0; }
+.g-nick__stage {
+  display: grid;
+  place-items: center;
+  padding: 26px 0 22px;
+  border-radius: var(--r-card);
+  background:
+    repeating-linear-gradient(102deg, rgba(255, 255, 255, 0.06) 0 16px, transparent 16px 32px),
+    linear-gradient(180deg, var(--c-asphalt), var(--c-asphalt-dark));
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+.g-nick__row { display: flex; gap: 8px; }
+.g-nick__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 48px;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.32);
+  color: var(--t-on-dark);
+  font: 700 20px / 1 var(--font-display);
+  letter-spacing: 0.04em;
+  pointer-events: auto;
+  transition: border-color var(--d-chip), box-shadow var(--d-chip);
+}
+.g-nick__input:focus { outline: none; border-color: var(--c-cyan); box-shadow: 0 0 0 4px color-mix(in srgb, var(--c-cyan) 25%, transparent); }
+.g-nick__row .btn { height: 48px; }
+.g-nick__count { font-size: 12px; font-weight: 600; color: var(--t-on-dark-2); }
+.g-nick.is-empty .g-nick__count { color: var(--c-coral-hi); }
+.g-nick__hint { font-size: 12px; font-weight: 700; color: var(--c-amber-hi); }
+.g-nick__note { font-size: 12px; color: var(--t-on-dark-3); line-height: 1.45; }
+
+/* ── footer ── */
+.g-foot { display: grid; gap: 10px; padding: 12px 18px 16px; border-top: 1px solid rgba(255, 255, 255, 0.08); background: rgba(0, 0, 0, 0.2); }
+.g-foot__status { display: flex; align-items: center; gap: 7px; min-height: 16px; font-size: 12px; font-weight: 700; color: var(--t-on-dark-2); }
+.g-foot__status::before { content: ''; width: 7px; height: 7px; flex: none; border-radius: 50%; background: var(--tone-info); }
+.g-foot__status[data-tone='good']::before { background: var(--tone-good); }
+.g-foot__status[data-tone='warn']::before { background: var(--tone-warn); }
+.g-foot__status[data-tone='bad']::before { background: var(--tone-bad); }
+.g-foot__status[data-tone='bad'] { color: var(--c-coral-hi); }
+.g-foot__row { display: flex; align-items: center; gap: 8px; }
+.g-foot__row > .btn { flex: none; }
+.g-foot__cta { flex: 1 1 auto; display: flex; min-width: 0; }
+.g-foot__cta > * { flex: 1 1 auto; }
+
+@media (max-width: 900px) {
+  .garage { --g-panel-w: 400px; --g-gap: 12px; }
+  .g-show__bike { font-size: 38px; }
+}

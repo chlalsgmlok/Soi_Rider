@@ -1,0 +1,139 @@
+/*
+ * Shared menu-screen pieces (title · garage · shop · setup): zoomed stage, header row, wallets, item art tiles,
+ * inline confirm-buy, flying fuel tokens, "SOLD" stamp. Authored at the 1280×720 design size; .menu-stage applies
+ * --ui-zoom (src/ui/core/viewport-scale.ts) so everything inside scales with the viewport.
+ */
+.menu-stage {
+  position: absolute;
+  inset: 0;
+  zoom: var(--ui-zoom);
+}
+
+/* ── header row ── */
+.menu-head {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  min-width: 0;
+}
+.menu-head__back { flex: none; }
+.menu-head__plate { flex: none; }
+.menu-head__text { display: grid; gap: 2px; min-width: 0; }
+.menu-head__title {
+  font: 800 var(--fs-title-s) / 1.1 var(--font-ui);
+  letter-spacing: -0.02em;
+  color: var(--t-on-dark);
+  text-shadow: var(--shadow-text);
+  white-space: nowrap;
+}
+.menu-head__sub {
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  color: var(--t-on-dark-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.menu-wallets { display: inline-flex; align-items: center; gap: var(--s-2); flex: none; }
+.menu-wallets .wallet { height: 38px; font-size: 17px; }
+
+/* ── item art tile ── */
+.menu-art {
+  --art-c: var(--c-pink);
+  --art-size: 64px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--art-size);
+  height: var(--art-size);
+  border-radius: 14px;
+  background:
+    radial-gradient(ellipse 60% 14% at 50% 84%, rgba(21, 24, 33, 0.16), transparent 70%),
+    radial-gradient(circle at 50% 30%, var(--c-white) 0, var(--c-cream) 52%, var(--c-cream-2) 100%);
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.07), inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+.menu-art--sm { --art-size: 48px; border-radius: 12px; }
+.menu-art--lg { --art-size: 92px; border-radius: 18px; }
+.menu-art__svg {
+  width: 86%;
+  height: 86%;
+  overflow: visible;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 2px 0 rgba(21, 24, 33, 0.14));
+}
+.menu-art :is(.p, .ps, .l, .g, .v, .sun, .cor, .pk, .wood) { stroke: var(--c-ink); stroke-width: 1.9; }
+.menu-art .p { fill: var(--art-c); }
+.menu-art .ps { fill: color-mix(in srgb, var(--art-c) 72%, var(--c-ink)); }
+.menu-art .k { fill: var(--c-ink); stroke: none; }
+.menu-art .ks { fill: none; stroke: var(--c-ink); }
+.menu-art .l { fill: var(--c-cream); }
+.menu-art .g { fill: color-mix(in srgb, var(--c-cyan-hi) 70%, var(--c-white)); }
+.menu-art .v { fill: var(--c-ink-2); }
+.menu-art .sun { fill: var(--c-sun); stroke-width: 1.2; }
+.menu-art .cor { fill: var(--c-coral); stroke-width: 1.2; }
+.menu-art .pk { fill: var(--c-pink-hi); stroke-width: 1; }
+.menu-art .rim { fill: none; stroke: var(--c-cream-3); stroke-width: 1.3; }
+.menu-art .hub { fill: var(--c-cream-3); }
+.menu-art .hl { fill: none; stroke: var(--c-white); stroke-width: 1.5; opacity: 0.6; }
+.menu-art .st { fill: none; stroke: var(--c-white); stroke-width: 1.6; }
+.menu-art .fl circle { fill: var(--c-cream); stroke: none; }
+.menu-art .fc circle { fill: var(--c-pink); }
+.menu-art .num { font: 800 8.5px / 1 var(--font-display); fill: var(--c-ink); stroke: none; }
+.menu-art .dim { fill: none; stroke: var(--t-on-light-3); stroke-width: 2.6; }
+.menu-art .wood { fill: var(--c-amber-deep); stroke-width: 1; }
+.menu-art--fuel .g { fill: color-mix(in srgb, var(--c-cyan-hi) 40%, var(--c-white)); }
+.menu-art.is-none { background: radial-gradient(circle at 50% 30%, var(--c-cream) 0, var(--c-cream-2) 100%); }
+
+/* ── confirm buy ── */
+.confirm-buy { display: inline-flex; align-items: center; gap: var(--s-2); }
+.confirm-buy--block { display: flex; }
+.confirm-buy--block > .btn { flex: 1 1 auto; }
+.confirm-buy__armed { display: inline-flex; gap: 6px; align-items: center; }
+.confirm-buy--block .confirm-buy__armed { display: flex; flex: 1 1 auto; }
+.confirm-buy--block .confirm-buy__armed > .btn:first-child { flex: 1 1 auto; }
+.confirm-buy__armed[hidden] { display: none; }
+.confirm-buy .btn.is-short .btn__price { background: var(--c-ink-2); color: var(--c-coral-hi); box-shadow: none; }
+.confirm-buy .btn.is-affordable { --btn-top: var(--c-tuk-hi); --btn-bg: var(--c-tuk); --btn-side: var(--c-tuk-deep); --btn-fg: var(--t-on-dark); }
+
+/* ── flying fuel token (purchase-fx.ts) ── */
+.menu-fly-fuel {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: var(--z-toast);
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--c-mango);
+  color: var(--c-ink);
+  box-shadow: inset 0 -2px 0 var(--c-amber-deep), 0 2px 0 rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+/* ── "SOLD" stamp ── */
+.menu-sold {
+  position: absolute;
+  left: 50%;
+  top: 38%;
+  translate: -50% -50%;
+  padding: 4px 12px 5px;
+  border: 3px solid var(--c-leaf-deep);
+  border-radius: 8px;
+  color: var(--c-leaf-deep);
+  background: color-mix(in srgb, var(--c-cream) 70%, transparent);
+  font: 800 15px / 1 var(--font-ui);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  rotate: -10deg;
+  pointer-events: none;
+  z-index: 2;
+  animation: menu-sold-out var(--d-card) var(--ease-in) 1.1s forwards;
+}
+@keyframes menu-sold-out { to { opacity: 0; } }

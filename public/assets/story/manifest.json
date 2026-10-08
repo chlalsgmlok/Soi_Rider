@@ -1,0 +1,38 @@
+[
+  {
+    "id": "story_title",
+    "file": "story_title.webp",
+    "thumb": "story_title_s.webp",
+    "caption_ko": "노을 지는 수쿰윗 교차로, gram 경로를 따라 택시와 툭툭 사이를 비집고 달린다."
+  },
+  {
+    "id": "story_first_call",
+    "file": "story_first_call.webp",
+    "thumb": "story_first_call_s.webp",
+    "caption_ko": "소이 23 윈 스탠드의 아침. 띵동, 첫 gram 콜이 울리자 렉 이모가 손을 흔든다."
+  },
+  {
+    "id": "story_rain",
+    "file": "story_rain.webp",
+    "thumb": "story_rain_s.webp",
+    "caption_ko": "갑자기 쏟아진 소나기! 잠깐 차양 아래 멈춰 손님에게 우비를 건넨다."
+  },
+  {
+    "id": "story_haze",
+    "file": "story_haze.webp",
+    "thumb": "story_haze_s.webp",
+    "caption_ko": "버스 매연에 손님이 콜록콜록. 얼른 돌아보며 마스크를 건넨다."
+  },
+  {
+    "id": "story_arrival",
+    "file": "story_arrival.webp",
+    "thumb": "story_arrival_s.webp",
+    "caption_ko": "네온 불빛 아래 무사히 도착. 손님의 손 인사와 팁에 엄지 척!"
+  },
+  {
+    "id": "story_garage",
+    "file": "story_garage.webp",
+    "thumb": "story_garage_s.webp",
+    "caption_ko": "하루를 마친 밤, 반쯤 내린 셔터와 백열등 아래 나의 키티 125가 쉬어 간다."
+  }
+]

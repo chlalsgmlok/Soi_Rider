@@ -1,0 +1,144 @@
+/*
+ * PAUSE overlay: blurred ink scrim, a frosted sheet with a tuk-tuk canopy scallop on top, trip card (cream gram card)
+ * beside the menu, and the controls legend below. Authored at 1280×720 (stage zoom: --ui-zoom).
+ */
+.pause {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(70% 60% at 50% 45%, color-mix(in srgb, var(--c-ink) 38%, transparent), color-mix(in srgb, var(--c-ink) 70%, transparent));
+  backdrop-filter: blur(8px) saturate(0.85);
+  -webkit-backdrop-filter: blur(8px) saturate(0.85);
+}
+.pause__stage { display: flex; flex-direction: column; align-items: center; gap: 18px; zoom: var(--ui-zoom); }
+
+.pause__sheet {
+  position: relative;
+  width: 780px;
+  max-width: calc(100vw / var(--ui-zoom) - 32px);
+  overflow: hidden;
+  border-radius: var(--r-sheet);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--c-ink-2) 92%, transparent), color-mix(in srgb, var(--c-ink) 95%, transparent));
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-float), var(--inner-hi);
+  color: var(--t-on-dark);
+}
+.pause__sheet--solo { width: 440px; }
+.pause__sheet > .scallop { --sc-size: 20px; }
+
+.pause__head { display: flex; align-items: center; gap: 16px; padding: 12px 24px 18px; }
+.pause__badge {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 54px;
+  height: 54px;
+  border-radius: 17px;
+  background: linear-gradient(180deg, var(--c-cyan-hi), var(--c-cyan) 60%);
+  color: var(--c-ink);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 4px 0 var(--c-cyan-deep), 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+.pause__titles { flex: 1 1 auto; min-width: 0; }
+.pause__title { font: 800 italic 44px/0.95 var(--font-display); letter-spacing: var(--tracking-logo); }
+.pause__sub { margin-top: 5px; font-size: 13.5px; font-weight: 600; color: var(--t-on-dark-2); }
+.pause__plate { flex: none; transform: rotate(2.5deg); }
+.pause__sheet--solo .pause__plate { display: none; }
+
+.pause__body { display: grid; grid-template-columns: minmax(0, 1fr) 300px; align-items: start; gap: 20px; padding: 0 24px 24px; }
+.pause__sheet--solo .pause__body { grid-template-columns: minmax(0, 1fr); }
+.pause__menu { display: grid; gap: 12px; }
+.pause__menu .btn { justify-content: flex-start; --btn-px: 20px; }
+.pause__menu .btn__label { align-items: flex-start; }
+.pause__menu .btn__key { margin-left: auto; }
+
+/* ── trip card ── */
+.pause-trip {
+  display: grid;
+  gap: 12px;
+  padding: 14px 16px 16px;
+  border-radius: 18px;
+  background: var(--c-cream);
+  color: var(--c-ink);
+  box-shadow: 0 4px 0 var(--c-cream-3), var(--shadow-card);
+}
+.pause-trip__head { display: flex; align-items: center; gap: 10px; }
+.pause-trip__no { font: 800 15px/1 var(--font-display); letter-spacing: 0.05em; }
+.pause-trip__phase {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  padding: 6px 11px;
+  border-radius: var(--r-pill);
+  background: var(--c-ink);
+  color: var(--t-on-dark);
+  font-size: 11.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.pause-trip__phase i { width: 7px; height: 7px; border-radius: 50%; background: var(--c-cyan); }
+.pause-trip__pax {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: var(--c-white);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+}
+.pause-trip__pax.is-empty { display: flex; font-weight: 700; color: var(--t-on-light-2); }
+.pause-trip__ping { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--c-cyan); color: var(--c-ink); }
+.pause-trip__who { display: grid; gap: 2px; min-width: 0; }
+.pause-trip__who b { font-size: 16px; font-weight: 800; }
+.pause-trip__who span { display: inline-flex; align-items: center; gap: 3px; overflow: hidden; font-size: 12px; font-weight: 600; color: var(--t-on-light-2); white-space: nowrap; }
+.pause-trip__who .icon { color: var(--c-mango); }
+.pause-trip__stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.pause-stat { display: grid; gap: 4px; padding: 10px 12px; border-radius: 12px; background: var(--c-cream-2); }
+.pause-stat__label { font-size: 11px; font-weight: 700; color: var(--t-on-light-3); }
+.pause-stat__value { font: 800 24px/1 var(--font-display); letter-spacing: -0.01em; }
+.pause-stat__value small { margin-left: 2px; font-size: 13px; font-weight: 600; color: var(--t-on-light-2); }
+.pause-stat--late { background: color-mix(in srgb, var(--c-coral) 14%, var(--c-cream)); }
+.pause-stat--late .pause-stat__value,
+.pause-stat--late .pause-stat__label { color: var(--c-coral-deep); }
+.pause-trip__comfort { display: grid; grid-template-columns: auto auto minmax(0, 1fr) auto; align-items: center; gap: 8px; }
+.pause-trip__comfort-label { font-size: 12px; font-weight: 700; color: var(--t-on-light-2); }
+.pause-trip__comfort b { min-width: 26px; text-align: right; font: 800 17px/1 var(--font-display); }
+.pause-trip__road { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 12.5px; font-weight: 700; color: var(--t-on-light-2); }
+
+/* ── controls legend ── */
+.pause-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px 16px;
+  max-width: calc(100vw / var(--ui-zoom) - 32px);
+  padding: 8px 18px 8px 8px;
+  border-radius: var(--r-pill);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--t-on-dark-2);
+  white-space: nowrap;
+}
+.pause-legend__title { padding: 6px 11px; border-radius: var(--r-pill); background: rgba(255, 255, 255, 0.1); color: var(--t-on-dark); font-size: 11.5px; }
+.pause-legend__item { display: inline-flex; align-items: center; gap: 4px; }
+.pause-legend__item > span:last-child { margin-left: 3px; }
+
+@media (hover: none) and (pointer: coarse) {
+  .pause-legend { display: none; }
+}
+
+@media (max-width: 820px) {
+  .pause__body { grid-template-columns: minmax(0, 1fr); }
+  .pause__plate { display: none; }
+  .pause-legend { display: none; }
+}

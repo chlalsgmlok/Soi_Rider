@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>mission sandbox · SOI RIDER</title>
+  <link rel="icon" href="data:," />
+  <style>
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #151821; }
+    canvas { position: fixed; inset: 0; }
+    #ms-dev { position: fixed; left: 50%; bottom: 10px; transform: translateX(-50%); z-index: 5; padding: 6px 12px;
+      border-radius: 12px; font: 500 11px/1.5 Kanit, Pretendard, system-ui, sans-serif; color: #fff; letter-spacing: .02em;
+      background: rgba(21, 24, 33, .55); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      pointer-events: none; white-space: pre; text-align: center; }
+    #ms-dev b { color: #3EE6D4; font-weight: 700; }
+    #ms-dev.hide { display: none; }
+  </style>
+</head>
+<body>
+  <!--
+    ?seed=7 &district=sukhumvit|siam|yaowarat|khaosan|silom &intensity=light|rush|gridlock &tod=morning|noon|sunset|night
+    &job=0|1|2 (gram offer, short → long) &trait=hurry|nervous|tourist|shopper|regular &bike=cub|scooter|sport
+    &bot=1 (autopilot) &from=pickup (start parked at the pickup) &storm=1 &stormAt=0.2 &smog=1 &smogAt=0.1 &weather=clear|haze|overcast
+    &cam=auto|diorama|pov &q=low|medium|high &warm=<s> &cars= &motos= &peds= &dev=0 (hide the debug line) &view=pickup|drop (spectator camera on a stop point)
+    Keys: WASD / arrows ride · Space tuck · E interact (prompts) · C camera · H horn
+  -->
+  <div id="ui"></div>
+  <div id="ms-dev">loading…</div>
+  <script type="module" src="/src/sandbox/mission.ts"></script>
+</body>
+</html>

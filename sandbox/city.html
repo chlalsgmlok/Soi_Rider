@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>city view · SOI RIDER</title>
+  <link rel="icon" href="data:," />
+  <style>
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #151821; }
+    canvas { position: fixed; inset: 0; }
+    #city-hud { position: fixed; left: 16px; bottom: 16px; z-index: 5; padding: 10px 14px; border-radius: 16px;
+      font: 500 12px/1.55 Kanit, Pretendard, system-ui, sans-serif; color: #fff; letter-spacing: .02em;
+      background: rgba(21, 24, 33, .55); backdrop-filter: blur(14px) saturate(1.3); -webkit-backdrop-filter: blur(14px) saturate(1.3);
+      box-shadow: 0 4px 0 rgba(0, 0, 0, .28); pointer-events: none; white-space: pre; }
+    #city-hud b { color: #3EE6D4; font-weight: 700; }
+    #city-hud.hide { display: none; }
+  </style>
+</head>
+<body>
+  <div id="city-hud">loading…</div>
+  <script type="module" src="/src/sandbox/city.ts"></script>
+</body>
+</html>

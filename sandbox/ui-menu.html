@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>SOI RIDER · menu screens sandbox</title>
+  <link rel="icon" href="data:," />
+  <style>
+    /* mockup 03 stands in for the live 3D diorama behind the menus */
+    #bg { position: fixed; inset: 0; background: #151821 url('/docs/reference/mockup-03-diorama.png') center / cover no-repeat; }
+    /* blur the HUD painted into the mockup (trip tag, distance, speedo) so it does not read as part of the menus */
+    .heal {
+      position: fixed;
+      backdrop-filter: blur(22px) saturate(1.05);
+      -webkit-backdrop-filter: blur(22px) saturate(1.05);
+      -webkit-mask-image: radial-gradient(closest-side, #000 62%, transparent);
+      mask-image: radial-gradient(closest-side, #000 62%, transparent);
+    }
+    /* sandbox-only turntable stand-in: rotates with GarageProps.onRotate */
+    #turntable {
+      position: fixed;
+      left: 30%;
+      top: 72%;
+      width: 300px;
+      height: 92px;
+      margin: -46px 0 0 -150px;
+      border-radius: 50%;
+      border: 3px dashed rgba(62, 230, 212, 0.75);
+      box-shadow: 0 0 0 10px rgba(21, 24, 33, 0.25);
+      display: none;
+      pointer-events: none;
+    }
+    #turntable::after {
+      content: '';
+      position: absolute;
+      left: calc(50% + cos(var(--a, 0rad)) * 50%);
+      top: calc(50% + sin(var(--a, 0rad)) * 50%);
+      width: 18px;
+      height: 18px;
+      margin: -9px 0 0 -9px;
+      border-radius: 50%;
+      background: #ff4d5e;
+      box-shadow: 0 0 0 3px #fff;
+    }
+    body[data-view='garage'] #turntable { display: block; }
+  </style>
+</head>
+<body>
+  <!--
+    ?view=title | garage | shop | setup | setup-nofuel      (screens chain into each other through their callbacks)
+    &baht=<n> &fuel=<n>   wallet override        &fresh=1  starter save (only starter items owned)
+    &attract=0            skip the title's "press any key" state        &reduced=1  force reduced motion
+    window.__ready · window.__menu = { view, preview, rotation, calls[] }
+  -->
+  <div id="app">
+    <div id="bg"></div>
+    <i class="heal" style="left: 0; top: -1%; width: 17%; height: 9.5%"></i>
+    <i class="heal" style="left: 88.4%; top: -1%; width: 12%; height: 10.5%"></i>
+    <i class="heal" style="left: 87.2%; top: 80.5%; width: 13.3%; height: 20%"></i>
+    <div id="turntable"></div>
+    <div id="ui"></div>
+  </div>
+  <script type="module" src="/src/sandbox/ui-menu.ts"></script>
+</body>
+</html>

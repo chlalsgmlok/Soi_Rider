@@ -1,0 +1,161 @@
+/*
+ * HUD shell + corner clusters (src/ui/hud/*). Everything sized for 1280×720 and scaled by --hud-zoom.
+ * TL trip tag · TR distance/ETA · BR speed gauge (+ combo / tuck / camera chips) · BL gram mini-phone · TC prompt + warnings.
+ */
+.hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: #fff;
+  font-family: var(--font-display);
+  visibility: hidden;
+}
+.hud.is-visible { visibility: visible; }
+
+.hud__corner {
+  position: absolute;
+  /* each cluster lays out on its own: a changing digit never relayouts the rest of the HUD */
+  contain: layout style;
+  zoom: var(--hud-zoom);
+  transition: transform var(--d-screen) var(--ease-out), opacity var(--d-card) var(--ease-out);
+}
+.hud__tl { top: var(--safe-t); left: var(--safe-l); }
+.hud__tr { top: var(--safe-t); right: var(--safe-r); display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.hud__br { bottom: var(--safe-b); right: var(--safe-r); display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.hud__bl { bottom: var(--safe-b); left: var(--safe-l); }
+.hud__tc { top: var(--safe-t); left: 50%; translate: -50% 0; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+
+.hud:not(.is-visible) .hud__tl { transform: translate(-40px, -12px); opacity: 0; }
+.hud:not(.is-visible) .hud__tr { transform: translate(40px, -12px); opacity: 0; }
+.hud:not(.is-visible) .hud__br { transform: translate(40px, 30px); opacity: 0; }
+.hud:not(.is-visible) .hud__bl { transform: translate(-40px, 40px); opacity: 0; }
+.hud:not(.is-visible) .hud__tc { opacity: 0; }
+.hud.is-visible .hud__tr { transition-delay: 60ms; }
+.hud.is-visible .hud__bl { transition-delay: 120ms; }
+.hud.is-visible .hud__br { transition-delay: 180ms; }
+
+/* ── TL: trip tag ── */
+.hud-trip { display: flex; flex-direction: column; align-items: flex-start; gap: 7px; }
+.hud-trip__title {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  line-height: 1;
+  text-shadow: var(--shadow-text);
+}
+.hud-trip__no { color: var(--c-cyan); font-weight: 800; font-size: 30px; letter-spacing: 0.01em; font-variant-numeric: tabular-nums; }
+.hud-trip__slash { font-weight: 400; font-size: 24px; opacity: 0.9; }
+.hud-trip__city { font-weight: 600; font-size: 24px; letter-spacing: 0.03em; }
+.hud-trip__rule {
+  align-self: stretch;
+  height: 2px;
+  margin-top: -1px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--c-cyan) 0 34px, rgba(255, 255, 255, 0.9) 34px 100%);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.35), 0 0 8px rgba(0, 0, 0, 0.2);
+}
+.hud-trip__road {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 600 13px/1 var(--font-display);
+  letter-spacing: 0.05em;
+  text-shadow: var(--shadow-text-strong);
+}
+.hud-trip__road-name { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hud-trip__chips { display: flex; gap: 6px; margin-top: 2px; }
+
+/* ── TR: target distance + ETA ── */
+.hud-target__label {
+  font: 700 12px/1 var(--font-ui);
+  letter-spacing: 0.02em;
+  text-shadow: var(--shadow-text-strong);
+  opacity: 0.92;
+}
+.hud-target__dist { display: flex; align-items: center; gap: 6px; line-height: 1; }
+.hud-target__pin { width: 30px; height: 30px; color: var(--c-coral); filter: var(--shadow-icon); translate: 0 -2px; }
+.hud-target__num { font-weight: 700; font-size: 34px; font-variant-numeric: tabular-nums; text-shadow: var(--shadow-text); letter-spacing: -0.01em; }
+.hud-target__unit { font-weight: 600; font-size: 20px; text-shadow: var(--shadow-text); }
+.hud-eta { gap: 6px; }
+.hud-eta .icon { width: 15px; height: 15px; }
+.hud-eta.is-warn { --tone: var(--c-amber); background: color-mix(in srgb, var(--c-amber) 30%, rgba(21, 24, 33, 0.66)); border-color: var(--c-amber); }
+.hud-eta.is-warn .icon { color: var(--c-amber); }
+.hud-eta.is-late { --tone: var(--c-coral); background: color-mix(in srgb, var(--c-coral) 55%, rgba(21, 24, 33, 0.5)); border-color: var(--c-coral-hi); animation: eta-late 1s var(--ease-inout) infinite; }
+.hud-eta.is-late .icon { color: #fff; }
+@keyframes eta-late { 50% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--c-coral) 30%, transparent); } }
+
+/* ── BR: speed gauge ── */
+.hud-gauge { position: relative; width: 188px; height: 176px; }
+/* glass dial behind arrow + numeral: a crisp disc reads cleaner than a soft vignette on bright vans/walls */
+.hud-gauge::before {
+  content: '';
+  position: absolute;
+  left: 32px;
+  top: 30px;
+  width: 124px;
+  height: 124px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 30%, rgba(44, 50, 70, 0.5), rgba(14, 17, 24, 0.62) 70%);
+  backdrop-filter: blur(10px) saturate(1.25);
+  -webkit-backdrop-filter: blur(10px) saturate(1.25);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 10px 24px rgba(0, 0, 0, 0.22);
+}
+.hud-gauge__svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.hud-gauge__case { fill: none; stroke: rgba(10, 12, 18, 0.34); stroke-width: 14; stroke-linecap: round; }
+.hud-gauge__track { fill: none; stroke: rgba(255, 255, 255, 0.26); stroke-width: 9; stroke-linecap: round; }
+.hud-gauge__sweep {
+  fill: none;
+  stroke: var(--c-cyan);
+  stroke-width: 9;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 5px rgba(62, 230, 212, 0.75));
+  transition: stroke 300ms var(--ease-out);
+}
+.hud-gauge__ticks { stroke: rgba(255, 255, 255, 0.6); stroke-width: 2; stroke-linecap: round; filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.45)); }
+.hud-gauge__ticks .is-major { stroke: #fff; stroke-width: 2.6; }
+.hud-gauge__cap { stroke: var(--c-amber); stroke-width: 4; stroke-linecap: round; opacity: 0; transition: opacity var(--d-chip); }
+.hud-gauge.is-tucking .hud-gauge__cap { opacity: 1; }
+.hud-gauge.is-tucking .hud-gauge__sweep { stroke: var(--c-amber); filter: drop-shadow(0 0 5px rgba(255, 178, 62, 0.7)); }
+.hud-gauge__arrow {
+  position: absolute;
+  left: 50%;
+  top: 42px;
+  width: 34px;
+  height: 34px;
+  margin-left: -17px;
+  color: #fff;
+  filter: var(--shadow-icon);
+  transform: rotate(var(--bearing, 0deg));
+  will-change: transform;
+}
+.hud-gauge__arrow.is-behind { color: var(--c-amber); }
+.hud-gauge__readout {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 86px;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 5px;
+  line-height: 1;
+  text-shadow: var(--shadow-text);
+}
+.hud-gauge__speed { font-weight: 800; font-size: 50px; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; min-width: 1.15em; text-align: right; }
+.hud-gauge__unit { font-weight: 600; font-size: 15px; }
+
+.hud-combo {
+  font: 800 italic 22px/1 var(--font-display);
+  color: var(--c-amber);
+  -webkit-text-stroke: 5px var(--c-ink);
+  paint-order: stroke fill;
+  letter-spacing: 0.01em;
+  filter: drop-shadow(0 3px 0 rgba(0, 0, 0, 0.3));
+  margin-right: 16px;
+  transition: opacity var(--d-chip), transform var(--d-chip) var(--ease-pop);
+}
+.hud-combo small { font-size: 14px; color: #fff; margin-right: 4px; }
+.hud-combo.is-off { opacity: 0; transform: scale(0.7); }
+.hud-tuck, .hud-cam { margin-right: 14px; transition: opacity var(--d-chip), transform var(--d-chip) var(--ease-pop); }
+.hud-tuck.is-off, .hud-cam.is-off { opacity: 0; transform: translateY(6px) scale(0.9); }
+.hud-cam .keycap { margin-left: -6px; }

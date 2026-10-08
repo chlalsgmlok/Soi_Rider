@@ -1,0 +1,167 @@
+/*
+ * gram call cards (Intro): compact row + an expanding drawer for the selected card (note + 콜 수락), and the
+ * accepted-call mini route view.
+ */
+.offer {
+  position: relative;
+  flex: none;
+  padding: 11px 12px 10px;
+  border-radius: 16px;
+  background: var(--c-white);
+  color: var(--c-ink);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05), 0 6px 14px rgba(70, 50, 20, 0.08);
+  cursor: pointer;
+  overflow: hidden;
+  transition: box-shadow var(--d-chip) var(--ease-out), transform var(--d-chip) var(--ease-out);
+}
+@media (hover: hover) {
+  .offer:not(.is-selected):hover { transform: translateY(-1px); box-shadow: 0 0 0 2px var(--c-cream-3), 0 8px 16px rgba(70, 50, 20, 0.1); }
+}
+.offer.is-selected { box-shadow: 0 0 0 2.5px var(--c-cyan-deep), 0 10px 22px color-mix(in srgb, var(--c-cyan-deep) 24%, transparent); cursor: default; }
+.offer.is-accepted { box-shadow: 0 0 0 3px var(--c-cyan), 0 12px 26px color-mix(in srgb, var(--c-cyan-deep) 30%, transparent); }
+
+.offer__top { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 10px; }
+.offer .avatar { --avatar: 44px; }
+.offer__who { display: grid; gap: 5px; min-width: 0; }
+.offer__name-row { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.offer__name { font: 800 15px/1.15 var(--font-ui); letter-spacing: -0.01em; }
+.offer__rating { display: inline-flex; flex: none; align-items: center; gap: 2px; font-size: 12px; font-weight: 700; color: var(--t-on-light-2); }
+.offer__rating .icon { color: var(--c-mango); }
+.offer__origin-row { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.offer__origin-row .chip { flex: none; height: 20px; padding: 0 7px; }
+.offer__origin { font-size: 11.5px; font-weight: 600; color: var(--t-on-light-3); }
+.offer__fare { display: grid; justify-items: end; gap: 2px; }
+.offer__fare-num { font: 800 26px/1 var(--font-display); letter-spacing: -0.02em; color: var(--c-ink); }
+.offer__fare-num small { margin-right: 1px; font-size: 15px; font-weight: 700; color: var(--c-amber-deep); }
+.offer__fare-cap { font-size: 10px; font-weight: 700; letter-spacing: 0.04em; color: var(--t-on-light-3); }
+.offer.is-selected .offer__fare-num { color: var(--c-cyan-ink); }
+
+.offer__trip {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px;
+  margin-top: 9px;
+  padding: 7px 9px;
+  border-radius: 10px;
+  background: var(--c-cream);
+  font-size: 12px;
+  font-weight: 700;
+}
+.offer__stop { display: inline-flex; align-items: center; gap: 5px; min-width: 0; }
+.offer__stop--pick i { flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--c-white); box-shadow: inset 0 0 0 2.5px var(--c-cyan-deep); }
+.offer__stop--drop .icon { flex: none; color: var(--c-coral); }
+.offer__arrow { color: var(--t-on-light-3); }
+.offer__km { padding-left: 6px; border-left: 1px solid var(--c-cream-3); font-weight: 700; color: var(--t-on-light-2); white-space: nowrap; }
+
+/* drawer: open while selected (grid 0fr → 1fr) */
+.offer__drawer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--d-card) var(--ease-out);
+}
+.offer.is-selected .offer__drawer { grid-template-rows: 1fr; }
+.offer__drawer-inner { min-height: 0; overflow: hidden; display: grid; gap: 8px; padding: 0 2px; }
+.offer.is-selected .offer__drawer-inner { padding: 9px 2px 3px; }
+.offer__note {
+  display: flex;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 10px 10px 10px 3px;
+  background: color-mix(in srgb, var(--c-cyan) 14%, var(--c-white));
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--c-ink);
+}
+.offer__note .icon { flex: none; margin-top: 1px; color: var(--c-cyan-ink); }
+.offer__pickup { display: flex; align-items: center; gap: 8px; padding: 0 2px; font-size: 11.5px; font-weight: 600; color: var(--t-on-light-2); }
+.offer__pickup b { color: var(--c-ink); }
+.offer__dot { width: 3px; height: 3px; border-radius: 50%; background: var(--t-on-light-3); }
+.offer__accept { --btn-h: 40px; margin-top: 2px; }
+.offer__accept:focus-visible { outline: 2px solid var(--c-white); outline-offset: -6px; }
+
+/* ── accepted: mini route view ── */
+.offer-route { display: grid; gap: 7px; }
+.offer-route__map {
+  width: 100%;
+  height: 112px;
+  border-radius: 12px;
+  background: var(--c-cream-2);
+  box-shadow: inset 0 0 0 1px var(--c-cream-3);
+}
+.offer-route .or-block { fill: var(--c-cream-3); opacity: 0.75; }
+.offer-route .or-reveal { fill: none; stroke: var(--c-white); stroke-width: 18; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 100 100; }
+.offer-route .or-casing { fill: none; stroke: var(--c-cyan-ink); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; opacity: 0.35; }
+.offer-route .or-route { fill: none; stroke: var(--c-cyan); stroke-width: 4.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 7 6; animation: or-march 0.8s linear infinite; }
+@keyframes or-march { to { stroke-dashoffset: -13; } }
+.offer-route .or-pin path { fill: var(--c-coral); }
+.offer-route .or-pin-hole { fill: var(--c-white); }
+/* pulse via the radius (SVG transforms mis-resolve their origin inside the CSS-zoomed phone) */
+.offer-route .or-pulse { fill: color-mix(in srgb, var(--c-coral) 30%, transparent); animation: or-pulse 1.3s var(--ease-out) infinite; }
+@keyframes or-pulse { from { r: 5px; opacity: 1; } to { r: 18px; opacity: 0; } }
+.offer-route .or-rider circle { fill: var(--c-ink); stroke: var(--c-cyan); stroke-width: 3; }
+.offer-route .or-rider-arrow { fill: var(--c-cyan); }
+.offer-route__eta { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--t-on-light-2); }
+.offer-route__eta b { color: var(--c-ink); font-weight: 800; }
+.offer-route__live { width: 8px; height: 8px; border-radius: 50%; background: var(--c-cyan-deep); --tone: var(--c-cyan-deep); animation: gram-live 1.2s var(--ease-inout) infinite; }
+.offer-route__pick { display: flex; align-items: center; gap: 6px; padding-bottom: 2px; font-size: 12px; font-weight: 700; color: var(--c-ink); }
+.offer-route__pick .icon { flex: none; color: var(--c-coral); }
+.offer-route__pick-name { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.offer-route__dist { color: var(--t-on-light-2); }
+
+/* ── accepted: chat thread ── */
+.gram-thread { display: grid; gap: 8px; padding: 4px 2px 0; }
+.gram-thread__sys {
+  display: inline-flex;
+  align-items: center;
+  justify-self: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--c-ink) 7%, transparent);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--t-on-light-2);
+}
+.gram-thread__sys .icon { color: var(--c-cyan-ink); }
+.gram-thread__msg { display: flex; align-items: flex-end; gap: 7px; }
+.gram-thread__msg .avatar { --avatar: 30px; }
+.gram-thread__bubble {
+  display: grid;
+  gap: 1px;
+  max-width: 240px;
+  padding: 7px 12px 8px;
+  border-radius: 14px 14px 14px 4px;
+  background: var(--c-white);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05), 0 4px 10px rgba(70, 50, 20, 0.08);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.gram-thread__bubble b { font-size: 10.5px; font-weight: 800; color: var(--t-on-light-3); }
+
+/* one-line peek of the note on unselected cards (the selected card shows it in full in its drawer) */
+.offer__peek {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  margin-top: 7px;
+  padding: 0 3px;
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--t-on-light-2);
+}
+.offer__peek .icon { flex: none; color: var(--c-cyan-ink); }
+.offer.is-selected .offer__peek { display: none; }
+
+/* short windows (landscape phones): denser cards; the peek gives way so more calls fit before the list scrolls */
+@media (max-height: 600px) {
+  .offer { padding: 9px 11px 9px; }
+  .offer__trip { margin-top: 7px; padding: 6px 9px; }
+  .offer__peek { display: none; }
+  .offer.is-selected .offer__drawer-inner { gap: 7px; padding: 7px 2px 2px; }
+  .offer-route__map { height: 96px; }
+}

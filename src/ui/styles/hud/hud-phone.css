@@ -1,0 +1,101 @@
+/* HUD gram mini-phone (bottom-left): passenger, comfort, phase, mini-map, speech bubble. */
+.phone.hud-phone { --phone-w: 248px; position: relative; }
+.hud-phone .phone__screen { border-radius: 20px; background: var(--c-cream); }
+
+.hud-phone__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  height: 30px;
+  padding: 0 10px 0 12px;
+  background: var(--c-cyan);
+  color: var(--c-ink);
+}
+.hud-phone__phase {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  font: 700 11.5px/1 var(--font-ui);
+  white-space: nowrap;
+}
+.hud-phone__phase-dot {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--c-ink);
+  animation: chip-live 1.4s var(--ease-inout) infinite;
+  --tone: var(--c-ink);
+}
+.hud-phone__phase.is-dropoff .hud-phone__phase-dot { background: var(--c-coral); --tone: var(--c-coral); }
+.hud-phone__phase-text { overflow: hidden; text-overflow: ellipsis; }
+
+.hud-phone__pax {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 10px 4px 10px;
+}
+.hud-phone__who { min-width: 0; line-height: 1.15; }
+.hud-phone__name { font: 800 14.5px/1.15 var(--font-ui); letter-spacing: -0.01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hud-phone__origin {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+  font: 600 10.5px/1.1 var(--font-ui);
+  color: var(--t-on-light-2);
+  white-space: nowrap;
+}
+.hud-phone__origin .icon { width: 11px; height: 11px; color: var(--c-mango); }
+.hud-phone__rating { font-family: var(--font-display); font-weight: 600; color: var(--c-ink); }
+.hud-phone__sep { opacity: 0.5; }
+.hud-phone__trait { height: 22px; padding: 0 8px; font-size: 11px; }
+
+.hud-phone__comfort {
+  display: grid;
+  grid-template-columns: 22px 1fr 26px;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px 8px 10px;
+}
+.hud-phone__face { width: 22px; height: 22px; transition: transform var(--d-chip) var(--ease-pop); }
+.hud-phone__face.is-bump { transform: scale(1.25); }
+.hud-phone__comfort-val { font: 700 13px/1 var(--font-display); font-variant-numeric: tabular-nums; text-align: right; }
+.hud-phone__comfort .meter { height: 8px; background: rgba(21, 24, 33, 0.12); box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.15); }
+
+.hud-phone__waiting {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  font: 700 13px/1.2 var(--font-ui);
+  color: var(--t-on-light-2);
+}
+
+.hud-phone__map-wrap {
+  position: relative;
+  margin: 0 6px 6px;
+  height: 118px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #efe4cf;
+  box-shadow: inset 0 0 0 1px rgba(21, 24, 33, 0.08);
+}
+.hud-phone__map { width: 100%; height: 100%; }
+.hud-phone__map-wrap.is-off { display: none; }
+.hud.is-night .hud-phone__map-wrap { background: #1f2433; }
+
+/* speech bubble anchored above the phone, tail pointing at the avatar */
+.hud-say {
+  position: absolute;
+  left: 8px;
+  bottom: calc(100% + 14px);
+  width: max-content;
+  max-width: 280px;
+  transform-origin: 20px 120%;
+}
+.hud-say.is-off { visibility: hidden; }

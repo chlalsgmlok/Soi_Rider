@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>SOI RIDER · UI sandbox</title>
+  <link rel="icon" href="data:," />
+  <style>
+    #bg { position: fixed; inset: 0; background: #151821 center / cover no-repeat; }
+    /*
+     * The reference mockups have their own HUD painted in. "Heal" patches blur those spots so the live HUD can be
+     * judged on its own (add &raw=1 to see both). Rects are % of a 16:9 viewport (the mockups are 16:9 too).
+     */
+    .heal {
+      position: fixed;
+      display: none;
+      backdrop-filter: blur(22px) saturate(1.05);
+      -webkit-backdrop-filter: blur(22px) saturate(1.05);
+      -webkit-mask-image: radial-gradient(closest-side, #000 62%, transparent);
+      mask-image: radial-gradient(closest-side, #000 62%, transparent);
+    }
+    body[data-bg='03']:not([data-raw]) .heal--03,
+    body[data-bg='02']:not([data-raw]) .heal--02 { display: block; }
+  </style>
+</head>
+<body>
+  <!--
+    ?view=hud (default) &bg=03|02|none   — full HUD over a mockup, driven by a fake HudState + event script
+        &freeze=<sec>  stop the clock at t   &raw=1  keep the mockup's painted-in HUD   &minimap=0  hide the map
+        &phase=toPickup|boarding|toDropoff|arriving   &night=1   &tod=noon|night
+    ?view=components                     — living style guide (every component + state)
+    ?view=transition                     — router demo: boot → crosswalk wipe → HUD; window.__wipe(), window.__pause()
+    &reduced=1                           — force reduced motion
+  -->
+  <div id="app">
+    <div id="bg"></div>
+    <i class="heal heal--03" style="left: 0; top: -1%; width: 17%; height: 9.5%"></i>
+    <i class="heal heal--03" style="left: 88.4%; top: -1%; width: 12%; height: 10.5%"></i>
+    <i class="heal heal--03" style="left: 87.2%; top: 80.5%; width: 13.3%; height: 20%"></i>
+    <i class="heal heal--02" style="left: 0; top: -1%; width: 13%; height: 9.5%"></i>
+    <i class="heal heal--02" style="left: 90%; top: -1%; width: 10.5%; height: 9%"></i>
+    <i class="heal heal--02" style="left: 33%; top: 46.5%; width: 8.6%; height: 8.6%"></i>
+    <div id="ui"></div>
+  </div>
+  <script type="module" src="/src/sandbox/ui.ts"></script>
+</body>
+</html>

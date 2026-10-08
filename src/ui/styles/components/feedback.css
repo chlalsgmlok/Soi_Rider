@@ -1,0 +1,169 @@
+/*
+ * Feedback: .toast-stack / .toast (tone-coloured pill notices), .sheet-scrim / .sheet (modal bottom sheet),
+ * .speech (speech bubble, shared by HUD + intro), .loader-road (boot progress road).
+ */
+
+/* ── toasts ── */
+.toast-stack {
+  position: absolute;
+  /* --hud-tc-h: live height of the HUD top-centre cluster (set by hud.ts), so ride toasts never cover the prompt */
+  top: calc(var(--safe-t) + max(96px, var(--hud-tc-h, 0px) + 12px));
+  left: 50%;
+  transition: top var(--d-card) var(--ease-out);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  translate: -50% 0;
+  pointer-events: none;
+}
+.toast {
+  --tone: var(--tone-info);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(520px, 86vw);
+  padding: 9px 18px 9px 10px;
+  border-radius: var(--r-pill);
+  background: var(--glass-bg-strong);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid color-mix(in srgb, var(--tone) 45%, transparent);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.3), var(--inner-hi);
+  color: #fff;
+  font: 700 14px/1.3 var(--font-ui);
+}
+.toast__icon {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--tone);
+  color: var(--c-ink);
+}
+.toast__icon .icon { width: 16px; height: 16px; }
+.toast--good { --tone: var(--tone-good); }
+.toast--good .toast__icon { color: #fff; }
+.toast--warn { --tone: var(--tone-warn); }
+.toast--bad { --tone: var(--tone-bad); }
+.toast--bad .toast__icon { color: #fff; }
+
+/* ── modal sheet ── */
+.sheet-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-sheet);
+  display: grid;
+  place-items: end center;
+  padding: var(--safe-t) var(--safe-r) var(--safe-b) var(--safe-l);
+  background: var(--scrim);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  pointer-events: auto;
+}
+.sheet-scrim--center { place-items: center; }
+.sheet {
+  position: relative;
+  width: min(480px, 100%);
+  border-radius: var(--r-sheet);
+  background: var(--c-cream);
+  color: var(--c-ink);
+  box-shadow: var(--shadow-float);
+  overflow: hidden;
+}
+.sheet .curb-divider { border-radius: 0; }
+.sheet__head { display: flex; align-items: center; gap: 12px; padding: 20px 22px 6px; }
+.sheet__title { font-size: var(--fs-title-s); font-weight: 800; letter-spacing: -0.01em; }
+.sheet__icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: 12px;
+  background: var(--c-cyan);
+  color: var(--c-ink);
+  box-shadow: 0 3px 0 var(--c-cyan-deep);
+}
+.sheet__body { padding: 6px 22px 18px; font-size: 15px; color: var(--t-on-light-2); }
+.sheet__actions { display: flex; gap: 10px; padding: 0 22px 22px; }
+.sheet__actions .btn { flex: 1 1 0; }
+.sheet__close { position: absolute; top: 18px; right: 16px; }
+
+/* ── speech bubble ── */
+.speech {
+  --tone: var(--c-cyan-deep);
+  position: relative;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: 300px;
+  padding: 10px 14px 11px 12px;
+  border-radius: 16px 16px 16px 6px;
+  background: #fff;
+  color: var(--c-ink);
+  font: 600 14px/1.38 var(--font-ui);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.12), 0 10px 22px rgba(0, 0, 0, 0.28);
+}
+.speech::after {
+  content: '';
+  position: absolute;
+  left: 14px;
+  bottom: -9px;
+  width: 18px;
+  height: 12px;
+  background: #fff;
+  clip-path: polygon(0 0, 100% 0, 10% 100%);
+}
+.speech__mood {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin-top: -1px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--tone);
+  color: #fff;
+}
+.speech__mood .icon { width: 14px; height: 14px; }
+.speech--happy { --tone: var(--c-leaf); }
+.speech--neutral { --tone: var(--c-cyan-deep); }
+.speech--scared { --tone: var(--c-amber-deep); }
+.speech--angry { --tone: var(--c-coral); }
+.speech--wet { --tone: var(--c-tuk); }
+.speech--cough { --tone: #7d7a74; }
+
+/* ── loader road: boot progress (scooter rides along a dashed road) ── */
+.loader-road {
+  --v: 0;
+  position: relative;
+  height: 18px;
+  border-radius: var(--r-pill);
+  background:
+    linear-gradient(90deg, transparent 0 8px, rgba(255, 255, 255, 0.55) 8px 20px, transparent 20px 28px) 0 50% / 28px 2px repeat-x,
+    var(--c-asphalt-dark);
+  box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+.loader-road__fill {
+  position: absolute;
+  inset: 4px auto 4px 4px;
+  width: calc((100% - 8px) * var(--v));
+  border-radius: var(--r-pill);
+  background: linear-gradient(90deg, var(--c-cyan-deep), var(--c-cyan));
+  box-shadow: 0 0 12px color-mix(in srgb, var(--c-cyan) 60%, transparent);
+  transition: width var(--d-chip) var(--ease-out);
+}
+.loader-road__rider {
+  position: absolute;
+  bottom: 10px;
+  left: calc((100% - 8px) * var(--v) - 14px);
+  width: 34px;
+  height: 34px;
+  color: #fff;
+  transition: left var(--d-chip) var(--ease-out);
+  animation: rider-bob 0.36s var(--ease-inout) infinite alternate;
+}
+@keyframes rider-bob { to { translate: 0 -2px; } }

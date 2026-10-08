@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>SOI RIDER · play screens sandbox</title>
+  <link rel="icon" href="data:," />
+  <style>
+    #bg { position: fixed; inset: 0; background: #151821 center / cover no-repeat; }
+    /* the mockup has its own HUD painted in: blur those corners so the live screens are judged on their own */
+    .heal {
+      position: fixed;
+      display: none;
+      backdrop-filter: blur(22px) saturate(1.05);
+      -webkit-backdrop-filter: blur(22px) saturate(1.05);
+      -webkit-mask-image: radial-gradient(closest-side, #000 62%, transparent);
+      mask-image: radial-gradient(closest-side, #000 62%, transparent);
+    }
+    body[data-bg='03'] .heal { display: block; }
+    #dev {
+      position: fixed; right: 8px; bottom: 8px; z-index: 99; display: flex; gap: 4px;
+      font: 600 11px/1 system-ui, sans-serif; opacity: 0.55;
+    }
+    #dev a { padding: 5px 7px; border-radius: 6px; background: #000a; color: #fff; text-decoration: none; }
+    body[data-shot] #dev { display: none; }
+  </style>
+</head>
+<body>
+  <!--
+    ?view=boot | intro | pause | results | results-fail | settings
+      &bg=03|02|none        backdrop (mockup 03 diorama by default; boot paints its own sky)
+      &reduced=1            force reduced motion
+      boot:    &p=0.62      freeze progress (otherwise a fake load runs 0 → 1, holds, then restarts as a new phase)
+      intro:   &secs=20     countdown length · &tod=morning|noon|sunset|night · &rain=1 · &trip=1
+      pause:   &hud=0       no HUD snapshot yet (menu-only sheet)
+      settings: &from=pause open it over the pause overlay
+      results: &grade=S|A|B|C|D  &fail=comfort|falls|timeout|abandon  &best=0 (no new record)
+      &shot=1               hide the dev links (screenshots)
+    window.__ready once fonts are in and the screen is mounted; window.__log lists callbacks fired (onAccept, onNext …).
+  -->
+  <div id="app">
+    <div id="bg"></div>
+    <i class="heal" style="left: 0; top: -1%; width: 17%; height: 9.5%"></i>
+    <i class="heal" style="left: 88.4%; top: -1%; width: 12%; height: 10.5%"></i>
+    <i class="heal" style="left: 87.2%; top: 80.5%; width: 13.3%; height: 20%"></i>
+    <div id="ui"></div>
+  </div>
+  <nav id="dev">
+    <a href="?view=boot">boot</a><a href="?view=intro">intro</a><a href="?view=pause">pause</a>
+    <a href="?view=results">results</a><a href="?view=results-fail">fail</a><a href="?view=settings">settings</a>
+  </nav>
+  <script type="module" src="/src/sandbox/ui-play.ts"></script>
+</body>
+</html>

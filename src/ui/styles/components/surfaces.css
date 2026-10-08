@@ -1,0 +1,227 @@
+/*
+ * Surfaces & Bangkok street motifs: .glass, .card, .panel, .soi-plate (blue street sign), .curb-divider (red/white curb),
+ * .crosswalk (zebra stripes, 12°), .scallop (tuk-tuk canopy edge), .section-head.
+ */
+
+/* ── glass ── */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-card);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2), var(--inner-hi);
+  color: #fff;
+}
+.glass--strong { background: var(--glass-bg-strong); }
+.glass--soft { background: var(--glass-bg-soft); }
+.glass--pill { border-radius: var(--r-pill); }
+
+/* ── card ── */
+.card {
+  position: relative;
+  padding: var(--s-4);
+  border-radius: var(--r-card);
+  background: var(--c-cream);
+  color: var(--c-ink);
+  box-shadow: var(--shadow-card), inset 0 -3px 0 rgba(0, 0, 0, 0.06);
+}
+.card--dark {
+  background: linear-gradient(180deg, rgba(41, 47, 66, 0.92), rgba(24, 28, 39, 0.94));
+  color: #fff;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-card), var(--inner-hi);
+}
+.card--interactive {
+  cursor: pointer;
+  pointer-events: auto;
+  transition: transform var(--d-chip) var(--ease-out), box-shadow var(--d-chip) var(--ease-out);
+}
+@media (hover: hover) {
+  .card--interactive:hover { transform: translateY(-3px); box-shadow: var(--shadow-float); }
+}
+.card--interactive:active { transform: translateY(1px) scale(0.99); }
+.card--interactive:focus-visible { outline-offset: 4px; }
+.card.is-selected {
+  box-shadow: 0 0 0 3px var(--c-cyan), 0 0 0 7px color-mix(in srgb, var(--c-cyan) 30%, transparent), var(--shadow-float);
+}
+.card.is-selected::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--c-cyan)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23151821' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E")
+    center / 18px no-repeat;
+  box-shadow: 0 0 0 3px var(--c-ink), 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+.card.is-locked > :not(.lock-veil) { filter: grayscale(0.6) brightness(0.92); }
+
+/* lock veil laid over locked items (components/lock-veil via h()) */
+.lock-veil {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: start end;
+  padding: 7px;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(21, 24, 33, 0.04), rgba(21, 24, 33, 0.32));
+  color: #fff;
+  pointer-events: none;
+}
+/* the glyph sits in a small ink badge in the top-right corner so names/prices stay readable */
+.lock-veil .icon {
+  width: 26px;
+  height: 26px;
+  padding: 5px;
+  border-radius: var(--r-pill);
+  background: var(--c-ink);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25), 0 0 0 2px rgba(255, 255, 255, 0.9);
+}
+
+/* ── panel: large docked surface for screens (garage/shop) ── */
+.panel {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--r-sheet);
+  background: linear-gradient(180deg, rgba(30, 35, 49, 0.9), rgba(21, 24, 33, 0.94));
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-float), var(--inner-hi);
+  color: #fff;
+  overflow: hidden;
+}
+.panel__head { padding: var(--s-5) var(--s-5) var(--s-3); }
+.panel__body { padding: 0 var(--s-5) var(--s-5); flex: 1 1 auto; min-height: 0; }
+.panel__foot { padding: var(--s-4) var(--s-5) var(--s-5); border-top: 1px solid rgba(255, 255, 255, 0.08); }
+
+/* ── soi plate: Bangkok blue street sign (Thai line above, Latin line below, white inset border) ── */
+.soi-plate {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  min-width: 96px;
+  padding: 6px 16px 7px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #2d64b8 0%, var(--c-sign) 60%, #1d4a90 100%);
+  color: #fff;
+  box-shadow:
+    inset 0 0 0 2px var(--c-sign),
+    inset 0 0 0 3.5px rgba(255, 255, 255, 0.92),
+    0 3px 0 #163a73,
+    0 8px 16px rgba(0, 0, 0, 0.28);
+  text-align: center;
+  line-height: 1.05;
+}
+.soi-plate__th { font: 600 12px/1.15 var(--font-display); opacity: 0.95; }
+.soi-plate__en { font: 700 15px/1.1 var(--font-display); letter-spacing: 0.04em; text-transform: uppercase; }
+.soi-plate__no {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 5px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: #fff;
+  color: var(--c-sign);
+  font: 800 12px/1 var(--font-display);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+}
+/* screws */
+.soi-plate::before,
+.soi-plate::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  margin-top: -2px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+}
+.soi-plate::before { left: 6px; }
+.soi-plate::after { right: 6px; }
+.soi-plate--lg { padding: 10px 26px 11px; border-radius: 10px; }
+.soi-plate--lg .soi-plate__th { font-size: 15px; }
+.soi-plate--lg .soi-plate__en { font-size: 24px; }
+.soi-plate--mini {
+  min-width: 0;
+  flex-direction: row;
+  gap: 6px;
+  padding: 3px 9px 4px;
+  border-radius: 5px;
+  box-shadow: inset 0 0 0 1.5px var(--c-sign), inset 0 0 0 2.5px rgba(255, 255, 255, 0.9), 0 2px 0 #163a73;
+}
+.soi-plate--mini::before,
+.soi-plate--mini::after { display: none; }
+.soi-plate--mini .soi-plate__en { font-size: 11px; letter-spacing: 0.06em; }
+.soi-plate--mini .soi-plate__th { font-size: 10px; }
+.soi-plate--green { background: linear-gradient(180deg, #1f8f5a, #13704a); box-shadow: inset 0 0 0 2px #13704a, inset 0 0 0 3.5px #fff, 0 3px 0 #0b4d33; }
+
+/* ── curb divider (red/white kerb stripes) ── */
+.curb-divider {
+  height: 8px;
+  border-radius: 3px;
+  background: repeating-linear-gradient(90deg, var(--c-curb-red) 0 22px, var(--c-curb-white) 22px 44px);
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 1px 0 rgba(0, 0, 0, 0.18);
+}
+.curb-divider--thin { height: 4px; border-radius: 2px; background-size: auto; }
+.curb-divider--v {
+  width: 8px;
+  height: auto;
+  align-self: stretch;
+  background: repeating-linear-gradient(180deg, var(--c-curb-red) 0 18px, var(--c-curb-white) 18px 36px);
+}
+.curb-divider--amber {
+  background: repeating-linear-gradient(90deg, var(--c-amber) 0 18px, var(--c-ink) 18px 36px);
+}
+
+/* ── crosswalk zebra (12° slant, matches the screen wipe) ── */
+.crosswalk {
+  --cw-stripe: 18px;
+  --cw-color: var(--c-curb-white);
+  --cw-gap: var(--c-asphalt);
+  background:
+    repeating-linear-gradient(102deg, var(--cw-color) 0 var(--cw-stripe), var(--cw-gap) var(--cw-stripe) calc(var(--cw-stripe) * 2));
+}
+.crosswalk--ink { --cw-gap: var(--c-ink); --cw-color: rgba(255, 255, 255, 0.9); }
+.crosswalk--subtle { --cw-color: rgba(255, 255, 255, 0.06); --cw-gap: transparent; }
+.crosswalk--band { height: 14px; border-radius: 4px; }
+.crosswalk--moving { animation: crosswalk-run 1.2s linear infinite; background-size: calc(var(--cw-stripe) * 2 / 0.978) 100%; }
+@keyframes crosswalk-run { to { background-position: calc(var(--cw-stripe) * 2 / 0.978) 0; } }
+
+/* ── scallop: tuk-tuk canopy fringe edge, put under a header ── */
+.scallop {
+  --sc-color: var(--c-tuk);
+  --sc-size: 14px;
+  height: calc(var(--sc-size) / 2 + 2px);
+  background: radial-gradient(circle at 50% 0, var(--sc-color) calc(var(--sc-size) / 2), transparent calc(var(--sc-size) / 2 + 0.5px)) 0 0 / var(--sc-size) 100% repeat-x;
+}
+.scallop--cyan { --sc-color: var(--c-cyan); }
+.scallop--pink { --sc-color: var(--c-pink); }
+
+/* ── section header ── */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-2);
+  margin-bottom: var(--s-3);
+}
+.section-head__kicker {
+  font: 600 11px/1 var(--font-display);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--c-cyan);
+}
+.section-head__title { font-size: var(--fs-label); font-weight: 800; }

@@ -1,0 +1,188 @@
+/*
+ * RESULTS layout: dimmed arrival scene, wallet chips top-right, the gram receipt (left) beside the verdict column
+ * (headline, NEW BEST, stars, passenger comment, actions). Authored at 1280×720 (stage zoom: --ui-zoom).
+ */
+.screen--results { overflow: hidden; }
+.results { position: absolute; inset: 0; display: grid; place-items: center; }
+.results__shade {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(80% 75% at 42% 55%, color-mix(in srgb, var(--c-ink) 34%, transparent), color-mix(in srgb, var(--c-ink) 80%, transparent));
+  backdrop-filter: blur(3px) saturate(0.9);
+  -webkit-backdrop-filter: blur(3px) saturate(0.9);
+}
+.results.is-failed .results__shade {
+  background: radial-gradient(80% 75% at 42% 55%, color-mix(in srgb, var(--c-ink) 42%, transparent), color-mix(in srgb, var(--c-ink) 74%, var(--c-coral-deep) 10%));
+  backdrop-filter: blur(4px) saturate(0.6);
+  -webkit-backdrop-filter: blur(4px) saturate(0.6);
+}
+.results__wallets { position: absolute; top: var(--safe-t); right: var(--safe-r); display: flex; gap: 8px; zoom: var(--ui-zoom); }
+/* --res-fit (stage-fit.ts) shrinks the stage further when even the compact layout overflows the window */
+.results__stage { position: relative; display: flex; align-items: center; gap: 56px; zoom: calc(var(--ui-zoom) * var(--res-fit, 1)); }
+.res-col { flex: none; width: 392px; }
+
+/* ── verdict column ── */
+.res-side {
+  --accent: var(--c-cyan);
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 20px;
+  width: 440px;
+  color: var(--t-on-dark);
+}
+.res-side[data-grade='S'] { --accent: var(--c-pink-hi); }
+.res-side[data-grade='B'] { --accent: var(--c-leaf-hi); }
+.res-side[data-grade='C'] { --accent: var(--c-amber); }
+.res-side[data-grade='D'] { --accent: var(--t-on-dark-2); }
+.res-side[data-grade='F'] { --accent: var(--c-coral); }
+
+.res-head__kicker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 30px;
+  font: 800 13px/1 var(--font-ui);
+  letter-spacing: 0.02em;
+  color: var(--accent);
+  text-shadow: var(--shadow-text);
+}
+.res-head__title {
+  margin-top: 8px;
+  font: 800 italic 76px/0.9 var(--font-display);
+  letter-spacing: var(--tracking-logo);
+  text-shadow: 0 4px 0 rgba(0, 0, 0, 0.3), 0 16px 34px rgba(0, 0, 0, 0.4);
+}
+.res-head__accent { color: var(--accent); }
+.res-head__sub { margin-top: 12px; font-size: 16px; font-weight: 600; line-height: 1.45; color: var(--t-on-dark-2); text-shadow: var(--shadow-text); }
+
+.res-best {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 6px;
+  padding: 6px 12px 6px 9px;
+  border-radius: var(--r-pill);
+  background: linear-gradient(180deg, var(--c-pink-hi), var(--c-pink) 60%);
+  color: var(--t-on-dark);
+  font: 800 italic 13px/1 var(--font-display);
+  letter-spacing: 0.04em;
+  text-shadow: none;
+  box-shadow: 0 3px 0 var(--c-pink-deep), 0 8px 18px color-mix(in srgb, var(--c-pink) 45%, transparent);
+  visibility: hidden;
+}
+.res-best small { font: 700 11px/1 var(--font-ui); font-style: normal; opacity: 0.85; }
+.res-best.is-in { visibility: visible; animation: res-best-shine 2.4s 0.6s var(--ease-inout) infinite; }
+@keyframes res-best-shine { 50% { filter: brightness(1.18) saturate(1.1); } }
+
+/* stars fill one by one (--f = 0..1 per star) */
+.res-rating { display: flex; align-items: center; gap: 12px; }
+.res-rating__stars { display: flex; gap: 4px; }
+.res-star { position: relative; width: 34px; height: 34px; }
+.res-star .icon { width: 34px; height: 34px; max-width: none; }
+.res-star__base { color: rgba(255, 255, 255, 0.16); }
+.res-star__fill { position: absolute; inset: 0 auto 0 0; width: 0; overflow: hidden; color: var(--c-mango); filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.28)); }
+.res-star.is-on .res-star__fill { width: calc(var(--f, 1) * 100%); }
+.res-rating__num { font: 800 30px/1 var(--font-display); text-shadow: var(--shadow-text); }
+.res-rating__cap { align-self: flex-end; padding-bottom: 4px; font-size: 12px; font-weight: 700; color: var(--t-on-dark-3); }
+
+.res-comment { display: flex; align-items: flex-end; gap: 12px; }
+.res-comment.is-pending { visibility: hidden; }
+.res-comment .avatar { box-shadow: 0 0 0 3px var(--c-white), 0 8px 18px rgba(0, 0, 0, 0.35); }
+.res-comment__bubble { display: grid; gap: 5px; margin-bottom: 14px; }
+.res-comment__name { font-size: 12px; font-weight: 800; color: var(--t-on-dark-2); text-shadow: var(--shadow-text); }
+.res-comment .speech { max-width: 350px; font-size: 15px; }
+
+.res-actions { display: grid; gap: 12px; margin-top: 4px; }
+.res-actions.is-pending { visibility: hidden; }
+.res-actions > .btn { width: 100%; }
+.res-actions__row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+/*
+ * reveal toggles flip instantly: the reduced-motion rule (base.css) gives every element a 1 ms transition on `all`,
+ * which would hold `visibility: hidden` for a frame and swallow the primary button's focus when the results finish
+ */
+.res-best,
+.res-comment,
+.res-actions,
+.res-actions__row { transition-property: none; }
+
+.res-skip {
+  position: absolute;
+  left: 50%;
+  bottom: var(--safe-b);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 6px;
+  border-radius: var(--r-pill);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--t-on-dark-2);
+  translate: -50% 0;
+  transition: opacity var(--d-chip) var(--ease-out);
+}
+.res-skip.is-gone { opacity: 0; pointer-events: none; }
+
+@media (max-width: 900px) {
+  .results__stage { gap: 28px; }
+  .res-side { width: 380px; }
+  .res-head__title { font-size: 60px; }
+}
+
+/* failed: the reason gets its own coral pill under the title */
+.res-head__reason {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 7px 18px 7px 7px;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--c-coral) 22%, var(--glass-bg-strong));
+  border: 1px solid color-mix(in srgb, var(--c-coral) 70%, transparent);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
+  font: 800 20px/1.1 var(--font-ui);
+  letter-spacing: -0.01em;
+}
+.res-head__reason-icon { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--c-coral); color: var(--c-white); }
+.res-side.is-failed .res-head__sub { margin-top: 10px; font-size: 14.5px; }
+
+/*
+ * Short screens (landscape phones, ≤ 600 px tall) and phone portrait: a denser verdict column so the receipt total and
+ * all three buttons stay on screen (stage-fit.ts covers whatever is left). The skip hint moves bottom-right, over the
+ * still-hidden buttons, instead of covering the receipt's payment block.
+ */
+@media (max-height: 600px), (orientation: portrait) and (max-width: 760px) {
+  .results__stage { gap: 36px; }
+  .res-col { width: 376px; }
+  .res-side { gap: 10px; width: 404px; }
+  .res-head__kicker { min-height: 24px; font-size: 12px; }
+  .res-best { padding: 5px 10px 5px 8px; font-size: 12px; }
+  .res-head__title { margin-top: 4px; font-size: 50px; }
+  .res-head__sub { margin-top: 6px; font-size: 14px; line-height: 1.4; }
+  .res-head__reason { margin-top: 10px; padding: 5px 14px 5px 5px; font-size: 16px; }
+  .res-head__reason-icon { width: 28px; height: 28px; }
+  .res-side.is-failed .res-head__sub { margin-top: 6px; font-size: 13px; }
+  .res-star,
+  .res-star .icon { width: 26px; height: 26px; }
+  .res-rating__num { font-size: 24px; }
+  .res-rating__cap { padding-bottom: 2px; }
+  .res-comment .avatar { --avatar: 50px; }
+  .res-comment__bubble { margin-bottom: 8px; }
+  .res-comment .speech { font-size: 13.5px; }
+  .res-actions { gap: 8px; margin-top: 2px; }
+  .res-actions > .btn { --btn-h: 56px; --btn-r: 20px; font-size: 20px; }
+  .res-actions__row { gap: 8px; }
+  .res-actions__row .btn { --btn-h: 46px; --btn-px: 18px; --btn-r: 16px; font-size: 15px; }
+  .res-skip { left: auto; right: var(--safe-r); translate: none; }
+}
+
+/* phone portrait: receipt above the verdict (stage-fit scales the stack to the screen height) */
+@media (orientation: portrait) and (max-width: 760px) {
+  .results__stage { flex-direction: column; align-items: stretch; gap: 20px; }
+  .res-col,
+  .res-side { width: 376px; }
+}

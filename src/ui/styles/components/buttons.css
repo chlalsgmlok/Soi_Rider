@@ -1,0 +1,206 @@
+/*
+ * .btn — chunky "toy" button: glossy top, a solid coloured side (box-shadow 0 4px 0) that collapses when pressed.
+ * Variants: --primary (gram cyan, default) · --secondary (tuk-tuk blue) · --ghost (dark glass) · --danger (coral)
+ * Sizes: --sm · (md) · --lg · --xl   Shapes: --block (full width) · --icon (square)
+ * Parts: .btn__icon .btn__label .btn__sub .btn__price .btn__key   States: :active/.is-pressed · [disabled]/.is-disabled · .is-locked
+ */
+.btn {
+  --btn-top: var(--c-cyan-hi);
+  --btn-bg: var(--c-cyan);
+  --btn-side: var(--c-cyan-deep);
+  --btn-fg: var(--c-ink);
+  --btn-h: 48px;
+  --btn-px: 22px;
+  --btn-r: 16px;
+  --btn-depth: 4px;
+  --focus-ring: #fff;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: var(--btn-h);
+  padding: 0 var(--btn-px);
+  border: 0;
+  border-radius: var(--btn-r);
+  color: var(--btn-fg);
+  font: 800 var(--fs-label) / 1 var(--font-ui);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  background: linear-gradient(180deg, var(--btn-top) 0%, var(--btn-bg) 52%);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.42),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.07),
+    0 var(--btn-depth) 0 var(--btn-side),
+    0 calc(var(--btn-depth) + 6px) 14px rgba(0, 0, 0, 0.22);
+  transform: translateY(0);
+  transition:
+    transform var(--d-tap) var(--ease-out),
+    box-shadow var(--d-tap) var(--ease-out),
+    filter var(--d-chip) var(--ease-out);
+  cursor: pointer;
+  pointer-events: auto;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  isolation: isolate;
+}
+
+/* gloss highlight */
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 3px 8px auto;
+  height: 38%;
+  border-radius: calc(var(--btn-r) - 4px) calc(var(--btn-r) - 4px) 40% 40%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0));
+  pointer-events: none;
+  z-index: -1;
+}
+
+@media (hover: hover) {
+  .btn:hover {
+    filter: brightness(1.05) saturate(1.06);
+    transform: translateY(-1px);
+    box-shadow:
+      inset 0 2px 0 rgba(255, 255, 255, 0.42),
+      inset 0 -2px 0 rgba(0, 0, 0, 0.07),
+      0 calc(var(--btn-depth) + 1px) 0 var(--btn-side),
+      0 calc(var(--btn-depth) + 9px) 18px rgba(0, 0, 0, 0.24);
+  }
+}
+
+.btn:active,
+.btn.is-pressed {
+  transform: translateY(calc(var(--btn-depth) - 1px));
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.07),
+    0 1px 0 var(--btn-side),
+    0 2px 5px rgba(0, 0, 0, 0.2);
+  filter: brightness(0.98);
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.42),
+    0 var(--btn-depth) 0 var(--btn-side),
+    0 0 0 7px color-mix(in srgb, var(--c-cyan) 45%, transparent),
+    0 calc(var(--btn-depth) + 6px) 14px rgba(0, 0, 0, 0.22);
+}
+
+/* ── variants ── */
+.btn--secondary {
+  --btn-top: var(--c-tuk-hi);
+  --btn-bg: var(--c-tuk);
+  --btn-side: var(--c-tuk-deep);
+  --btn-fg: #fff;
+  --focus-ring: var(--c-cyan);
+}
+
+.btn--danger {
+  --btn-top: var(--c-coral-hi);
+  --btn-bg: var(--c-coral);
+  --btn-side: var(--c-coral-deep);
+  --btn-fg: #fff;
+  --focus-ring: #fff;
+}
+
+.btn--sun {
+  --btn-top: #ffe2a6;
+  --btn-bg: var(--c-sun);
+  --btn-side: var(--c-amber-deep);
+  --btn-fg: var(--c-ink);
+}
+
+.btn--ghost {
+  --btn-top: rgba(255, 255, 255, 0.1);
+  --btn-bg: var(--glass-bg);
+  --btn-side: rgba(0, 0, 0, 0.35);
+  --btn-fg: #fff;
+  --focus-ring: var(--c-cyan);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow:
+    inset 0 0 0 1px var(--glass-border),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 var(--btn-depth) 0 var(--btn-side),
+    0 calc(var(--btn-depth) + 6px) 14px rgba(0, 0, 0, 0.18);
+}
+.btn--ghost::before { opacity: 0.35; }
+
+/* light ghost for cream cards / receipts */
+.btn--paper {
+  --btn-top: #fff;
+  --btn-bg: var(--c-cream-2);
+  --btn-side: var(--c-cream-3);
+  --btn-fg: var(--c-ink);
+  --focus-ring: var(--c-cyan-deep);
+}
+
+/* ── sizes & shapes ── */
+.btn--sm { --btn-h: 36px; --btn-px: 14px; --btn-r: 12px; --btn-depth: 3px; font-size: var(--fs-body); gap: 6px; }
+.btn--lg { --btn-h: 60px; --btn-px: 30px; --btn-r: 20px; --btn-depth: 5px; font-size: var(--fs-title-s); }
+.btn--xl { --btn-h: 72px; --btn-px: 40px; --btn-r: 24px; --btn-depth: 6px; font-size: 24px; }
+.btn--block { display: flex; width: 100%; }
+.btn--icon { --btn-px: 0; width: var(--btn-h); }
+.btn--pill { --btn-r: var(--r-pill); }
+
+/* ── parts ── */
+.btn__icon { width: 1.25em; height: 1.25em; flex: none; }
+.btn__label { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 3px; line-height: 1.05; }
+.btn--block .btn__label { align-items: center; }
+.btn__sub { font-size: 0.72em; font-weight: 600; opacity: 0.72; letter-spacing: 0; }
+.btn__key {
+  margin-left: 4px;
+  min-width: 22px;
+  height: 22px;
+  font-size: 12px;
+}
+.btn__price {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 4px;
+  padding: 3px 8px 3px 4px;
+  border-radius: var(--r-pill);
+  background: rgba(0, 0, 0, 0.18);
+  font: 700 0.8em/1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── states ── */
+.btn[disabled],
+.btn.is-disabled,
+.btn[aria-disabled='true'] {
+  cursor: not-allowed;
+  filter: grayscale(0.55) brightness(0.85);
+  opacity: 0.5;
+  transform: none;
+  pointer-events: none;
+}
+
+.btn.is-locked {
+  --btn-top: #4a5168;
+  --btn-bg: var(--c-ink-3);
+  --btn-side: #1d2130;
+  --btn-fg: rgba(255, 255, 255, 0.86);
+}
+.btn.is-locked .btn__price { background: var(--c-sun); color: var(--c-ink); }
+.btn.is-locked.is-affordable .btn__price { box-shadow: 0 0 0 2px var(--c-cyan); }
+
+/* busy: subtle shimmer while an action resolves */
+.btn.is-busy { pointer-events: none; }
+.btn.is-busy::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.35) 50%, transparent 70%) -100% 0 / 200% 100%;
+  animation: btn-shimmer 1.1s linear infinite;
+}
+@keyframes btn-shimmer { to { background-position: 100% 0; } }
+
+/* group: segmented row of buttons */
+.btn-row { display: flex; gap: var(--s-3); align-items: center; flex-wrap: wrap; }

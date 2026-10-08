@@ -1,0 +1,266 @@
+/*
+ * BOOT — dusk Bangkok skyline + BTS, logo lockup, road loader (cyan route + win rider), rotating tips.
+ * Authored at 1280×720; the stage scales with --ui-zoom. Colours derive from tokens (color-mix) only.
+ */
+.screen--boot { background: var(--c-ink); }
+
+.boot {
+  --boot-dusk: color-mix(in srgb, var(--c-ink) 74%, var(--c-tuk));
+  --boot-ember: color-mix(in srgb, var(--c-ink) 52%, var(--c-coral));
+  --boot-mint: color-mix(in srgb, var(--c-cyan) 58%, var(--c-leaf-hi));
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: var(--t-on-dark);
+}
+
+/* ── sky ── */
+.boot__sky {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(80% 55% at 50% 104%, color-mix(in srgb, var(--c-amber) 62%, transparent), transparent 72%),
+    radial-gradient(46% 38% at 88% 0%, color-mix(in srgb, var(--c-pink) 24%, transparent), transparent 70%),
+    linear-gradient(180deg, var(--c-ink) 0%, var(--boot-dusk) 46%, var(--boot-ember) 100%);
+}
+.boot__sun {
+  position: absolute;
+  left: 50%;
+  bottom: 21%;
+  width: 300px;
+  height: 300px;
+  translate: -50% 50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--c-sun) 88%, var(--c-white)) 0 34%, color-mix(in srgb, var(--c-sun) 38%, transparent) 36%, transparent 70%);
+  opacity: 0.75;
+}
+
+/* ── skyline, BTS, cables ── */
+.boot-skyline { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 34%; }
+.boot-skyline .bk-back .bk-mass { fill: color-mix(in srgb, var(--c-ink) 80%, var(--c-tuk)); }
+.boot-skyline .bk-front .bk-mass { fill: var(--c-ink); }
+.boot-skyline .bk-win { fill: var(--c-sun); opacity: 0.78; }
+.boot-skyline .bk-win--cool { fill: var(--c-cyan-hi); opacity: 0.42; }
+.boot-skyline .bk-back .bk-win { opacity: 0.4; }
+.bk-bts .bk-pillar { fill: color-mix(in srgb, var(--c-ink) 86%, var(--c-tuk)); }
+.bk-bts .bk-deck { fill: color-mix(in srgb, var(--c-ink-3) 82%, var(--c-amber)); }
+.bk-bts .bk-deck-shade { fill: var(--c-ink); opacity: 0.6; }
+.bk-train { animation: bk-train 16s linear infinite; }
+.bk-train .bk-car { fill: color-mix(in srgb, var(--c-ink-3) 78%, var(--c-white)); }
+.bk-train .bk-car-win { fill: var(--c-sun); opacity: 0.85; }
+.bk-train .bk-car-stripe { fill: var(--c-leaf); }
+@keyframes bk-train {
+  from { transform: translateX(-420px); }
+  to { transform: translateX(1640px); }
+}
+.boot-cables { position: absolute; left: 0; top: 0; width: 100%; height: 40%; }
+.bk-cables path { fill: none; stroke: var(--c-ink); stroke-width: 2.2; opacity: 0.85; }
+.bk-pole { fill: var(--c-ink); }
+
+/* ── stage ── */
+.boot__stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  margin-top: -56px;
+  zoom: var(--ui-zoom);
+}
+
+/* logo lockup */
+.boot-lockup { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.boot-logo {
+  display: flex;
+  gap: 0.2em;
+  font: 800 italic 116px/0.9 var(--font-display);
+  letter-spacing: var(--tracking-logo);
+  color: var(--t-on-dark);
+  text-shadow: 0 5px 0 rgba(0, 0, 0, 0.32), 0 18px 36px rgba(0, 0, 0, 0.35);
+}
+.boot-logo__word--accent { color: var(--c-cyan); text-shadow: 0 5px 0 var(--c-cyan-ink), 0 18px 36px rgba(0, 0, 0, 0.35); }
+
+/* win-rider vest badge (orange vest, stitched edge, number tab) */
+.boot-vest {
+  position: relative;
+  padding: 7px 26px 9px 22px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, var(--c-amber-hi) 0%, var(--c-amber) 55%);
+  color: var(--c-ink);
+  box-shadow: inset 0 0 0 3px var(--c-amber), inset 0 0 0 4.5px rgba(255, 255, 255, 0.55), 0 4px 0 var(--c-amber-deep), 0 12px 24px rgba(0, 0, 0, 0.3);
+  transform: rotate(-2.5deg);
+}
+.boot-vest__th { font: 700 26px/1.1 var(--font-display); letter-spacing: 0.01em; }
+.boot-vest__no {
+  position: absolute;
+  top: -11px;
+  right: -14px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--c-white);
+  color: var(--c-ink);
+  font-weight: 800;
+  font-size: 15px;
+  box-shadow: 0 0 0 3px var(--c-ink), 0 3px 0 rgba(0, 0, 0, 0.3);
+  transform: rotate(6deg);
+}
+.boot-tagline {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font: 700 15px/1 var(--font-ui);
+  letter-spacing: 0.34em;
+  color: var(--t-on-dark-2);
+  text-shadow: var(--shadow-text);
+}
+.boot-tagline__rule { width: 44px; height: 2px; border-radius: 1px; background: rgba(255, 255, 255, 0.32); }
+.boot-tagline__rule:first-child { background: linear-gradient(90deg, transparent, var(--c-cyan)); }
+.boot-tagline__rule:last-child { background: linear-gradient(90deg, var(--c-cyan), transparent); }
+
+/* ── loader road ── */
+.boot__loader { width: 600px; }
+.boot-road { --p: 0; display: flex; align-items: flex-end; gap: 14px; }
+.boot-road__lane { position: relative; flex: 1 1 auto; height: 92px; }
+.boot-road__asphalt {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 32px;
+  border-radius: 9px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.22) 0 16px, transparent 16px 34px) 0 50% / 34px 2px repeat-x,
+    var(--c-asphalt-dark);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.45), 0 1px 0 rgba(255, 255, 255, 0.08), 0 10px 22px rgba(0, 0, 0, 0.3);
+}
+/* curbs: red-white kerb stripes top and bottom */
+.boot-road__asphalt::before,
+.boot-road__asphalt::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  height: 4px;
+  border-radius: 2px;
+  background: repeating-linear-gradient(90deg, var(--c-curb-red) 0 14px, var(--c-curb-white) 14px 28px);
+  opacity: 0.9;
+}
+.boot-road__asphalt::before { top: -2px; }
+.boot-road__asphalt::after { bottom: -2px; }
+.boot-road__route {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  width: calc((100% - 60px) * var(--p));
+  height: 6px;
+  margin-top: -3px;
+  border-radius: 3px;
+  background: repeating-linear-gradient(90deg, var(--c-cyan) 0 15px, transparent 15px 25px);
+  filter: drop-shadow(0 0 5px var(--c-cyan)) drop-shadow(0 0 1px var(--c-cyan-ink));
+  animation: boot-route-march 0.7s linear infinite;
+}
+@keyframes boot-route-march { to { background-position: 25px 0; } }
+.boot-road__pin {
+  position: absolute;
+  right: 4px;
+  bottom: 12px;
+  color: var(--c-coral);
+  --icon-hole: var(--c-white);
+  filter: var(--shadow-icon);
+  transform-origin: 50% 100%;
+  animation: boot-pin-bob 1.2s var(--ease-inout) infinite alternate;
+}
+.boot-road__pin .icon { fill: currentColor; }
+@keyframes boot-pin-bob { to { translate: 0 -4px; } }
+.boot-road.is-done .boot-road__pin { animation: boot-pin-arrive 0.6s var(--ease-pop) both; }
+@keyframes boot-pin-arrive { 0% { transform: scale(1); } 45% { transform: scale(1.35) translateY(-6px); } 100% { transform: scale(1.15); } }
+.boot-road__rider {
+  position: absolute;
+  bottom: 9px;
+  left: calc((100% - 60px) * var(--p) + 10px);
+  width: 86px;
+  translate: -94% 0;
+}
+.boot-road__trail {
+  position: absolute;
+  right: 92%;
+  top: 46%;
+  width: 34px;
+  height: 12px;
+  background:
+    linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7)) 0 0 / 100% 2px no-repeat,
+    linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45)) 10px 5px / 70% 2px no-repeat,
+    linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6)) 4px 10px / 85% 2px no-repeat;
+  animation: boot-trail 0.42s linear infinite;
+}
+@keyframes boot-trail { 50% { opacity: 0.4; transform: translateX(-4px); } }
+.boot-road.is-done .boot-road__trail { opacity: 0; animation: none; }
+.boot-road__readout { min-width: 82px; padding-bottom: 2px; text-align: right; font: 800 italic 36px/1 var(--font-display); text-shadow: var(--shadow-text); }
+.boot-road__readout small { margin-left: 2px; font-size: 17px; opacity: 0.6; }
+.boot__label { min-height: 20px; margin-top: 14px; text-align: center; font-size: 13px; font-weight: 600; color: var(--t-on-dark-2); text-shadow: var(--shadow-text); }
+
+/* scooter art */
+.boot-scooter { width: 100%; height: auto; overflow: visible; }
+.boot-scooter .bs-shadow { fill: rgba(0, 0, 0, 0.38); }
+.boot-scooter .bs-paint { fill: var(--boot-mint); }
+.boot-scooter .bs-paint-dark { fill: var(--c-cyan-deep); }
+.boot-scooter .bs-seat { fill: var(--c-ink); }
+.boot-scooter .bs-tail { fill: var(--c-coral); }
+.boot-scooter .bs-lamp { fill: var(--c-sun); }
+.boot-scooter .bs-bar { fill: none; stroke: var(--c-ink); stroke-width: 2.4; stroke-linecap: round; }
+.boot-scooter .bs-leg { fill: none; stroke: var(--c-tuk-deep); stroke-width: 4.4; stroke-linecap: round; stroke-linejoin: round; }
+.boot-scooter .bs-vest { fill: var(--c-amber); }
+.boot-scooter .bs-vest-stripe { fill: none; stroke: rgba(255, 255, 255, 0.85); stroke-width: 1.6; stroke-linecap: round; }
+.boot-scooter .bs-arm { fill: none; stroke: var(--c-curb-white); stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; }
+.boot-scooter .bs-helmet { fill: var(--c-white); }
+.boot-scooter .bs-visor { fill: var(--c-ink); }
+.boot-scooter .bs-tyre { fill: var(--c-ink); }
+.boot-scooter .bs-hub { fill: var(--c-curb-white); }
+.boot-scooter .bs-tread { fill: none; stroke: var(--c-asphalt); stroke-width: 2.4; stroke-dasharray: 3 3; animation: bs-spin 0.3s linear infinite; }
+.boot-scooter__body { animation: bs-bob 0.3s var(--ease-inout) infinite alternate; }
+@keyframes bs-spin { to { stroke-dashoffset: -6; } }
+@keyframes bs-bob { to { transform: translateY(-1.2px); } }
+.boot-road.is-done .bs-tread,
+.boot-road.is-done .boot-scooter__body { animation-play-state: paused; }
+
+/* ── tips ── */
+.boot-tip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 660px;
+  min-height: 46px;
+  padding: 8px 20px 8px 8px;
+  border-radius: var(--r-pill);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-chip), var(--inner-hi);
+}
+.boot-tip__tag {
+  flex: none;
+  padding: 7px 12px;
+  border-radius: var(--r-pill);
+  background: var(--c-amber);
+  color: var(--c-ink);
+  font: 800 12px/1 var(--font-ui);
+  box-shadow: 0 2px 0 var(--c-amber-deep);
+}
+.boot-tip__body { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.boot-tip__text { font-size: 14px; font-weight: 600; line-height: 1.35; color: var(--t-on-dark); }
+
+.boot__foot {
+  position: absolute;
+  left: var(--safe-l);
+  right: var(--safe-r);
+  bottom: var(--safe-b);
+  display: flex;
+  justify-content: space-between;
+  color: var(--t-on-dark-3);
+}
