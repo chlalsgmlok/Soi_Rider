@@ -28,6 +28,8 @@ export const SCORE = {
   careSmooth: 300,
   careLandmark: 150,
   counterflowPerSec: 15,
+  /** riding against traffic with the bike centre this close (m) to the yellow centre line is tolerated */
+  counterflowGraceM: 1.0,
   sidewalkPerSec: 20,
 } as const;
 

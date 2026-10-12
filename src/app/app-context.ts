@@ -2,6 +2,7 @@ import type { AudioEngine, MusicTrack } from '../audio';
 import type { EventBus } from '../core/events';
 import type { CityData, RunConfig, RunResult, Settings } from '../core/types';
 import type { Assets, Engine, Input } from '../engine';
+import type { Leaderboard } from '../online';
 import type { UI } from '../ui';
 import type { Backdrops } from './backdrops';
 import type { AppParams } from './params';
@@ -11,7 +12,7 @@ import type { GameSession } from './session/game-session';
 import type { StoryBeats } from './story/story-beats';
 
 /** BOOT → TITLE → (GARAGE ⇄ SHOP) → SETUP → INTRO → PLAY ⇄ PAUSE → RESULTS (docs/GAME_DESIGN.md §2) */
-export type AppState = 'boot' | 'title' | 'garage' | 'shop' | 'setup' | 'intro' | 'play' | 'pause' | 'results';
+export type AppState = 'boot' | 'title' | 'garage' | 'shop' | 'ranking' | 'setup' | 'intro' | 'play' | 'pause' | 'results';
 
 /** whatever is on screen this frame: a menu backdrop, the intro at the win stand, the run */
 export interface Stage {
@@ -27,6 +28,8 @@ export interface AppNav {
   garage(): void;
   /** the shop returns through `back` (title or garage) */
   shop(back: () => void): void;
+  /** the online ranking returns through `back` */
+  ranking(back: () => void): void;
   setup(): void;
   /** the run is configured: build the city, show the gram phone at the win stand */
   intro(config: RunConfig): void;
@@ -44,6 +47,8 @@ export interface AppCtx {
   readonly bus: EventBus;
   readonly params: AppParams;
   readonly saves: SaveKeeper;
+  /** online ranking (best score per rider); offline when no server is configured */
+  readonly leaderboard: Leaderboard;
   readonly backdrops: Backdrops;
   /** story comic panels (first call, raincoat, mask) — inert until the story art exists */
   readonly story: StoryBeats;

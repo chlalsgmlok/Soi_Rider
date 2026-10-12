@@ -2,11 +2,13 @@ import { AudioEngine, bindAudio, type MusicTrack } from '../audio';
 import { bus } from '../core/events';
 import type { CityData, RunConfig, RunResult, Settings } from '../core/types';
 import { Assets, Engine, GameLoop, Input } from '../engine';
+import { Leaderboard } from '../online';
 import { reducedMotion, UI } from '../ui';
 import '../ui/screens/boot';
 import '../ui/screens/garage';
 import '../ui/screens/intro';
 import '../ui/screens/pause';
+import '../ui/screens/ranking';
 import '../ui/screens/results';
 import '../ui/screens/settings';
 import '../ui/screens/setup';
@@ -17,11 +19,13 @@ import { Backdrops } from './backdrops';
 import { runBoot } from './flows/boot-flow';
 import { showGarage, showShop } from './flows/garage-flow';
 import { showIntro } from './flows/intro-flow';
+import { showRanking } from './flows/ranking-flow';
 import { openPause } from './flows/pause-flow';
 import { openSettings } from './flows/settings-flow';
 import { showSetup } from './flows/setup-flow';
 import { startAt } from './flows/skip-flow';
 import { showTitle } from './flows/title-flow';
+import { startFuelClock } from './fuel-clock';
 import { GameProbe } from './game-probe';
 import { type AppParams, readParams } from './params';
 import { SaveKeeper } from './save-keeper';
@@ -38,6 +42,7 @@ import { StoryBeats } from './story/story-beats';
 export class App implements AppCtx, AppNav {
   readonly params: AppParams = readParams(location.search);
   readonly saves = new SaveKeeper();
+  readonly leaderboard = new Leaderboard();
   readonly bus = bus;
   readonly assets = new Assets();
   readonly audio: AudioEngine;
@@ -75,6 +80,7 @@ export class App implements AppCtx, AppNav {
     this.probe = new GameProbe(this);
     this.loop = new GameLoop({ step: (dt) => this.session?.step(dt), render: (_a, dt) => this.frame(dt) });
     this.loop.start();
+    startFuelClock(this.saves, this.ui);
     // leaving the tab mid-ride opens the pause sheet instead of letting the run go on blind
     document.addEventListener('visibilitychange', () => {
       if (document.hidden && this.state === 'play' && this.session) openPause(this, this.session);
@@ -91,6 +97,10 @@ export class App implements AppCtx, AppNav {
 
   shop(back: () => void): void {
     showShop(this, back);
+  }
+
+  ranking(back: () => void): void {
+    showRanking(this, back);
   }
 
   setup(): void {

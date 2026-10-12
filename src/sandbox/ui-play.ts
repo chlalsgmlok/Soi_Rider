@@ -150,6 +150,7 @@ function runResults(failDefault: FailReason | null): void {
 const views: Record<string, () => void> = {
   boot: runBoot,
   intro: runIntro,
+  hud: () => revealHud(),
   pause: runPause,
   settings: runSettings,
   results: () => runResults(null),

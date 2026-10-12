@@ -20,6 +20,11 @@ export function showResults(ctx: AppCtx, session: GameSession, unbindHud: () => 
   const save = opts.demo ? settled.save : ctx.saves.commit(settled.save);
   ctx.lastResult = settled.result;
   ctx.bus.emit('run:complete', settled.result);
+  if (!opts.demo && settled.result.newBest) {
+    void ctx.leaderboard.sync(save).then((rank) => {
+      if (rank) ctx.ui.toast(`최고 기록 등록! 온라인 순위 ${rank}위`, 'good', 'trophy');
+    }).catch(() => undefined);
+  }
   ctx.input.setTouchControls(false);
   ctx.engine.endAutoQuality();
   ctx.backdrops.setTitleTime(session.config.timeOfDay);

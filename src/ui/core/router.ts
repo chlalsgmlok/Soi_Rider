@@ -3,6 +3,7 @@
  * transitions never overlap. show() mounts immediately (hidden) and returns a live handle; the swap happens
  * while the transition covers the screen.
  */
+import type { SaveData } from '../../core/types/save';
 import type { ScreenId, ScreenPropsMap, Transition } from '../../core/types/screens';
 import type { ScreenContext, ScreenHandle, ScreenView, ShowOptions, UiServices, EnterStyle } from './screen-types';
 import { getScreen, isDefaultOverlay } from './screen-registry';
@@ -82,6 +83,11 @@ export class Router {
     } else console.warn(`[ui] no screen registered for "${id}" — showing an empty layer`);
     this.enqueue(() => this.swapIn(entry, transition, opts.onCovered));
     return this.handle(entry);
+  }
+
+  /** push a fresh save into every live screen whose props carry one (free fuel refill while a menu is open) */
+  patchSave(save: SaveData): void {
+    for (const e of [this.base, ...this.overlays]) if (e && e.state !== 'closed' && 'save' in e.props) this.handle(e).update({ save });
   }
 
   /** run a transition without a screen change, serialised with screen swaps */

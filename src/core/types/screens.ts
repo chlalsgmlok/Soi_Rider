@@ -1,9 +1,10 @@
-import type { JobOffer, RunResult, TimeOfDay, TrafficIntensity, WeatherPlan } from './game';
+import type { Grade, JobOffer, RunResult, TimeOfDay, TrafficIntensity, WeatherPlan } from './game';
 import type { CatalogItem, Loadout, SaveData, Settings } from './save';
 import type { DistrictId } from './world';
 
 /** Screen contracts between src/ui (DOM overlays) and src/app (state machine + 3D backdrops). */
-export type ScreenId = 'boot' | 'title' | 'garage' | 'shop' | 'setup' | 'intro' | 'hud' | 'pause' | 'results' | 'settings';
+export type ScreenId =
+  | 'boot' | 'title' | 'garage' | 'shop' | 'setup' | 'intro' | 'hud' | 'pause' | 'results' | 'settings' | 'ranking';
 export type Transition = 'wipe' | 'fade' | 'none';
 
 export interface Forecast {
@@ -36,6 +37,7 @@ export interface TitleProps {
   onGarage(): void;
   onShop(): void;
   onSettings(): void;
+  onRanking(): void;
 }
 
 /** Garage panel docks RIGHT (max 460 px); the left side stays transparent for the 3D turntable. */
@@ -108,6 +110,34 @@ export interface SettingsProps {
   onBack(): void;
 }
 
+/** one rider on the online ranking (best score per rider) */
+export interface RankingEntry {
+  rank: number;
+  nickname: string;
+  score: number;
+  grade: Grade;
+  /** this device's rider */
+  me: boolean;
+}
+
+/** what the ranking screen shows: online = live board, offline = no server configured, error = server unreachable */
+export interface RankingView {
+  status: 'online' | 'offline' | 'error';
+  entries: RankingEntry[];
+  /** this rider: rank null when not on the board (no record yet / offline) */
+  mine: { rank: number | null; nickname: string; score: number; grade: Grade | null };
+  /** riders on the board (online only) */
+  total: number;
+  message?: string;
+}
+
+export interface RankingProps {
+  save: SaveData;
+  /** fetch (and first upload this rider's best) — called on open and on 새로고침 */
+  load(): Promise<RankingView>;
+  onBack(): void;
+}
+
 export interface ScreenPropsMap {
   boot: BootProps;
   title: TitleProps;
@@ -119,4 +149,5 @@ export interface ScreenPropsMap {
   pause: PauseProps;
   results: ResultsProps;
   settings: SettingsProps;
+  ranking: RankingProps;
 }

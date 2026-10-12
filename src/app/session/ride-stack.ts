@@ -47,7 +47,7 @@ export class RideStack {
     this.cam.setWorld(city);
     this.cam.setMode(opts.mode);
     this.env = {
-      grip: gripFor(0), surfaceAt: (x, z) => city.surfaceAt(x, z), extraWidth: 0, nearestLane: (p, d) => city.nearestLane(p, d),
+      grip: gripFor(0), surfaceAt: (x, z) => city.surfaceAt(x, z), extraWidth: 0, nearestLane: (p, d) => city.nearestLane(p, d), edge: (id) => city.edge(id),
     };
     bus.on('player:fall', () => {
       this.cam.eventShot('fall', null, 2.3);

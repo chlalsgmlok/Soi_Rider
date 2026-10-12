@@ -14,6 +14,8 @@ describe('repairSave', () => {
 
   it('reports nothing for clean data', () => {
     expect(repairSave(JSON.parse(JSON.stringify(createDefaultSave()))).repaired).toEqual([]);
+    const { fuelRegenAt: _clock, ...older } = createDefaultSave(); // saves from before the fuel refill clock
+    expect(repairSave(older)).toMatchObject({ repaired: [], save: { fuelRegenAt: 0 } });
   });
 
   it('clamps and fixes numbers', () => {

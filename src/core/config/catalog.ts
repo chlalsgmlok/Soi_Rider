@@ -68,6 +68,9 @@ export const STARTER_LOADOUT: Loadout = {
 
 export const STARTING_BAHT = 300;
 export const STARTING_FUEL = 5;
+/** one free fuel every FUEL_REGEN_MINUTES while the tank holds less than FUEL_REGEN_CAP */
+export const FUEL_REGEN_MINUTES = 30;
+export const FUEL_REGEN_CAP = 5;
 /** a free refill is offered at most once every N trips when fuel = 0 and baht < cheapest pack */
 export const FREE_REFILL_EVERY = 3;
 

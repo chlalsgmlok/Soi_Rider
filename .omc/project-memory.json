@@ -1,0 +1,258 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1791522955934,
+  "projectRoot": "C:\\Users\\chlal\\Desktop\\cursorworkspace\\playground\\apps\\soi-rider",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      },
+      {
+        "name": "TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "tsconfig.json"
+        ]
+      }
+    ],
+    "frameworks": [
+      {
+        "name": "vite",
+        "version": "8.3.3",
+        "category": "build"
+      },
+      {
+        "name": "vitest",
+        "version": "5.0.3",
+        "category": "testing"
+      }
+    ],
+    "packageManager": "npm",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": "npm run build",
+    "testCommand": "npm test",
+    "lintCommand": null,
+    "devCommand": "npm run dev",
+    "scripts": {
+      "dev": "vite",
+      "build": "tsc --noEmit && vite build",
+      "typecheck": "tsc --noEmit",
+      "preview": "vite preview",
+      "test": "vitest run",
+      "assets": "node blender/run-blender.mjs",
+      "shot": "node tools/shot.mjs"
+    }
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "docs",
+      "public",
+      "src"
+    ],
+    "gitBranches": null
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "blender": {
+      "path": "blender",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1791522955788,
+      "keyFiles": [
+        "run-blender.mjs"
+      ]
+    },
+    "dist": {
+      "path": "dist",
+      "purpose": "Distribution/build output",
+      "fileCount": 1,
+      "lastAccessed": 1791522955791,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "docs": {
+      "path": "docs",
+      "purpose": "Documentation",
+      "fileCount": 4,
+      "lastAccessed": 1791522955829,
+      "keyFiles": [
+        "ARCHITECTURE.md",
+        "ASSET_SPEC.md",
+        "DESIGN_SYSTEM.md",
+        "GAME_DESIGN.md"
+      ]
+    },
+    "public": {
+      "path": "public",
+      "purpose": "Public files",
+      "fileCount": 0,
+      "lastAccessed": 1791522955831,
+      "keyFiles": []
+    },
+    "sandbox": {
+      "path": "sandbox",
+      "purpose": null,
+      "fileCount": 13,
+      "lastAccessed": 1791522955835,
+      "keyFiles": [
+        "audio.html",
+        "city.html",
+        "citymap.html",
+        "engine.html",
+        "mission.html"
+      ]
+    },
+    "shots": {
+      "path": "shots",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1791522955837,
+      "keyFiles": [
+        "_models.png"
+      ]
+    },
+    "src": {
+      "path": "src",
+      "purpose": "Source code",
+      "fileCount": 1,
+      "lastAccessed": 1791522955840,
+      "keyFiles": [
+        "main.ts"
+      ]
+    },
+    "tools": {
+      "path": "tools",
+      "purpose": null,
+      "fileCount": 3,
+      "lastAccessed": 1791522955843,
+      "keyFiles": [
+        "e2e.mjs",
+        "glb-inspect.mjs",
+        "shot.mjs"
+      ]
+    },
+    "blender\\assets": {
+      "path": "blender\\assets",
+      "purpose": "Static assets",
+      "fileCount": 1,
+      "lastAccessed": 1791522955847,
+      "keyFiles": [
+        "_smoke_test.py"
+      ]
+    },
+    "blender\\lib": {
+      "path": "blender\\lib",
+      "purpose": "Library code",
+      "fileCount": 38,
+      "lastAccessed": 1791522955849,
+      "keyFiles": [
+        "bikes_gear.py",
+        "bikes_kit.py",
+        "bikes_parts.py"
+      ]
+    },
+    "dist\\assets": {
+      "path": "dist\\assets",
+      "purpose": "Static assets",
+      "fileCount": 144,
+      "lastAccessed": 1791522955852,
+      "keyFiles": [
+        "kanit-latin-400-normal-BUlsQXH3.woff2",
+        "kanit-latin-400-normal-HVZWrfev.woff",
+        "kanit-latin-500-normal-CX_4XcKi.woff2"
+      ]
+    },
+    "public\\assets": {
+      "path": "public\\assets",
+      "purpose": "Static assets",
+      "fileCount": 0,
+      "lastAccessed": 1791522955857,
+      "keyFiles": []
+    },
+    "src\\app": {
+      "path": "src\\app",
+      "purpose": "Application code",
+      "fileCount": 11,
+      "lastAccessed": 1791522955863,
+      "keyFiles": [
+        "app-context.ts",
+        "app.ts",
+        "backdrops.ts"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "shots\\v3\\title.png",
+      "accessCount": 2,
+      "lastAccessed": 1791523384150,
+      "type": "file"
+    },
+    {
+      "path": "shots\\v3\\ranking-offline.png",
+      "accessCount": 2,
+      "lastAccessed": 1791523541337,
+      "type": "file"
+    },
+    {
+      "path": "src\\logic\\fuel-regen.test.ts",
+      "accessCount": 1,
+      "lastAccessed": 1791523049698,
+      "type": "file"
+    },
+    {
+      "path": "src\\player\\ride-env-centreline.test.ts",
+      "accessCount": 1,
+      "lastAccessed": 1791523051504,
+      "type": "file"
+    },
+    {
+      "path": "src\\online\\leaderboard.test.ts",
+      "accessCount": 1,
+      "lastAccessed": 1791523092716,
+      "type": "file"
+    },
+    {
+      "path": "docs\\leaderboard-setup.md",
+      "accessCount": 1,
+      "lastAccessed": 1791523157628,
+      "type": "file"
+    },
+    {
+      "path": "shots\\v3\\ranking-online.png",
+      "accessCount": 1,
+      "lastAccessed": 1791523384821,
+      "type": "file"
+    },
+    {
+      "path": "shots\\v3\\hud-centerline.png",
+      "accessCount": 1,
+      "lastAccessed": 1791523482740,
+      "type": "file"
+    },
+    {
+      "path": "shots\\e2e\\full-5-yaowarat\\09-play-360.png",
+      "accessCount": 1,
+      "lastAccessed": 1791525151872,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}

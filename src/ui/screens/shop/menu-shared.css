@@ -37,6 +37,16 @@
 
 .menu-wallets { display: inline-flex; align-items: center; gap: var(--s-2); flex: none; }
 .menu-wallets .wallet { height: 38px; font-size: 17px; }
+/* free fuel refill countdown on the ⛽ chip ("+1 29:59"), hidden while the tank is full */
+.menu-wallets .wallet__timer {
+  margin-left: 2px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--c-cyan) 20%, transparent);
+  color: var(--c-cyan);
+  font: 800 11px / 1 var(--font-ui);
+  letter-spacing: 0;
+}
 
 /* ── item art tile ── */
 .menu-art {

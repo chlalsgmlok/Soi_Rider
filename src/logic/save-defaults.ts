@@ -44,6 +44,7 @@ export function createDefaultSave(): SaveData {
     bestScore: 0,
     bestGrade: { light: null, rush: null, gridlock: null },
     freeRefillAtTrip: NEVER_REFILLED,
+    fuelRegenAt: 0,
     settings: { ...DEFAULT_SETTINGS },
   };
 }

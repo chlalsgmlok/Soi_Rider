@@ -6,6 +6,7 @@
  *   ui.hud.update(state)  ·  ui.toast('연료 +5', 'good')  ·  ui.nav.press('down')  (gamepad)
  */
 import '../styles/load-styles';
+import type { SaveData } from '../../core/types/save';
 import type { ScreenId, ScreenPropsMap, Transition } from '../../core/types/screens';
 import { bus as globalBus, type EventBus, type Tone, type UiSfx } from '../../core/events';
 import type { ScreenHandle, ShowOptions, UiServices } from './screen-types';
@@ -84,6 +85,11 @@ export class UI implements UiServices {
 
   top(): ScreenId | null {
     return this.router.top()?.id ?? null;
+  }
+
+  /** the save changed outside a screen's own callbacks (free fuel refill): update every open screen that shows one */
+  refreshSave(save: SaveData): void {
+    this.router.patchSave(save);
   }
 
   toast(text: string, tone: Tone = 'info', icon?: string): void {

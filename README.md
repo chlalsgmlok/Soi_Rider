@@ -22,6 +22,12 @@ The game loop: `BOOT → TITLE → (GARAGE ⇄ SHOP) → SETUP → INTRO (gram c
 garage / title`. The save (wallet, fuel, loadout, best scores, settings) lives in `localStorage`
 (`soi-rider:save:v1`).
 
+### Online ranking (optional)
+
+The title screen's **순위** board ranks riders by their best score. It needs a free Supabase project: run the SQL
+in `docs/leaderboard-setup.md`, then copy `.env.example` to `.env.local` and set `VITE_SUPABASE_URL` /
+`VITE_SUPABASE_ANON_KEY`. Without them the board runs offline (this device's best only).
+
 ## Controls
 
 | Action | Keyboard | Gamepad | Touch |

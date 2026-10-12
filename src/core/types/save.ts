@@ -75,5 +75,7 @@ export interface SaveData {
   bestGrade: Record<TrafficIntensity, Grade | null>;
   /** trip counter value when the free refill was last used */
   freeRefillAtTrip: number;
+  /** when the free fuel refill clock last started (ms since epoch; 0 = long ago) */
+  fuelRegenAt: number;
   settings: Settings;
 }

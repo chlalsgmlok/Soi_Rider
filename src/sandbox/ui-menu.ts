@@ -7,12 +7,14 @@
 import { CATALOG } from '../core/config/catalog';
 import type { TrafficIntensity } from '../core/types/game';
 import type { SaveData } from '../core/types/save';
-import type { BuyResult, Forecast, Transition } from '../core/types/screens';
+import type { BuyResult, Forecast, RankingView, Transition } from '../core/types/screens';
 import { UI } from '../ui/core/ui';
 import { setTitleGate } from '../ui/screens/title';
 import '../ui/screens/garage';
 import '../ui/screens/shop';
 import '../ui/screens/setup';
+import '../ui/screens/ranking';
+import { demoRanking } from './ui-menu-ranking';
 import { buy, claimFreeRefill, createDefaultSave, equip, freeRefillAvailable, rerollForecast, rollForecast } from '../logic';
 
 interface MenuDebug {
@@ -80,7 +82,7 @@ function showTitle(t: Transition = 'wipe'): void {
     onStart: () => showSetup(),
     onGarage: () => showGarage(),
     onShop: () => showShop(),
-    onSettings: () => ui.toast('설정 화면은 screens 에이전트 담당이에요', 'info', 'settings'),
+    onRanking: () => showRanking('ranking'), onSettings: () => ui.toast('설정 화면은 screens 에이전트 담당이에요', 'info', 'settings'),
   }, t);
 }
 
@@ -147,12 +149,20 @@ function showSetup(t: Transition = 'wipe'): void {
   }, t, { onCovered: () => (document.body.dataset.view = 'setup') });
 }
 
+function showRanking(mode: string, t: Transition = 'wipe'): void {
+  const load = (): Promise<RankingView> => new Promise((done) => window.setTimeout(() => done(demoRanking(mode, save.bestScore)), num('delay', 350)));
+  ui.show('ranking', { save, load, onBack: () => showTitle() }, t, { onCovered: () => (document.body.dataset.view = 'ranking') });
+}
+
 const first: Record<string, () => void> = {
   title: () => showTitle('none'),
   garage: () => showGarage('none'),
   shop: () => showShop('none'),
   setup: () => showSetup('none'),
   'setup-nofuel': () => showSetup('none'),
+  ranking: () => showRanking('ranking', 'none'),
+  'ranking-offline': () => showRanking('ranking-offline', 'none'),
+  'ranking-error': () => showRanking('ranking-error', 'none'),
 };
 (first[view] ?? first.title)();
 

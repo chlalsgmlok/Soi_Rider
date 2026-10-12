@@ -73,6 +73,8 @@ export interface PlayerState {
   fallTimer: number;
   /** riding against the lane direction */
   counterflow: boolean;
+  /** against traffic but hugging the centre line (within SCORE.counterflowGraceM): tolerated, no penalty */
+  centerline?: boolean;
   laneId: number;
   /** longitudinal acceleration this frame (m/s²) — comfort uses it */
   accel: number;

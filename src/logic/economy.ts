@@ -4,6 +4,7 @@ import { finiteOr } from './finite';
 import { betterGrade } from './grade';
 import { LOADOUT_SLOTS, itemIdFor, sanitizeNickname, slotValueValid, withSlot } from './loadout-items';
 import { isStarterItem } from './save-defaults';
+import { startRegenClock } from './fuel-regen';
 
 /**
  * Wallet, fuel and inventory rules (docs/GAME_DESIGN.md §3, §11). Every function is pure: it returns a new SaveData and
@@ -76,10 +77,10 @@ export function consumeFuel(save: SaveData): SaveData {
   return save.fuel >= 1 ? { ...save, fuel: save.fuel - 1 } : save;
 }
 
-/** check + consume in one step (Setup `출근하기`) */
-export function startRun(save: SaveData): { ok: boolean; save: SaveData; reason?: 'noFuel' } {
+/** check + consume in one step (Setup `출근하기`); taking a full tank below the cap starts the free refill clock */
+export function startRun(save: SaveData, now = Date.now()): { ok: boolean; save: SaveData; reason?: 'noFuel' } {
   const check = canStartRun(save);
-  return check.ok ? { ok: true, save: consumeFuel(save) } : { ok: false, save, reason: check.reason };
+  return check.ok ? { ok: true, save: startRegenClock(save, consumeFuel(save), now) } : { ok: false, save, reason: check.reason };
 }
 
 /** grants FREE_REFILL_FUEL when available; returns the save unchanged otherwise */

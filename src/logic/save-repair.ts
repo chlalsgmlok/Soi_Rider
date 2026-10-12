@@ -45,6 +45,7 @@ export function repairSave(raw: unknown): RepairReport {
   const fuel = int('fuel', STARTING_FUEL, 0, 999);
   const tripsCompleted = int('tripsCompleted', 0, 0, 9_999_999);
   const bestScore = int('bestScore', 0, 0, 9_999_999);
+  const fuelRegenAt = raw.fuelRegenAt === undefined ? 0 : int('fuelRegenAt', 0, 0, 8_640_000_000_000_000); // older saves: no clock yet
   const owned = repairOwned(raw.owned, note);
   const loadout = repairLoadout(raw.loadout, owned, note);
   const bestGrade = repairBestGrade(raw.bestGrade, note);
@@ -56,7 +57,7 @@ export function repairSave(raw: unknown): RepairReport {
 
   const settings = repairSettings(raw.settings, note);
   return {
-    save: { version: 1, baht, fuel, owned, loadout, tripsCompleted, bestScore, bestGrade, freeRefillAtTrip, settings },
+    save: { version: 1, baht, fuel, owned, loadout, tripsCompleted, bestScore, bestGrade, freeRefillAtTrip, fuelRegenAt, settings },
     repaired,
   };
 }

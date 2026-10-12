@@ -60,6 +60,8 @@ export interface HudState {
   prompt: PromptState | null;
   cameraMode: CameraMode;
   counterflow: boolean;
+  /** riding against traffic right next to the centre line (tolerated, no penalty) */
+  centerline?: boolean;
   onSidewalk: boolean;
   tucking: boolean;
   minimap: MinimapState;

@@ -42,6 +42,7 @@ export class HudFrame {
     st.rain = x.rain;
     st.cameraMode = x.cameraMode;
     st.counterflow = s.counterflow;
+    st.centerline = s.centerline === true;
     st.onSidewalk = s.surface === Surface.Sidewalk;
     st.tucking = s.tuck;
     const cl = st.clearance;

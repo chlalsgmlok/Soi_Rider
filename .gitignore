@@ -3,3 +3,6 @@ dist
 shots
 blender/logs
 *.blend1
+.env
+.env.local
+.env.*.local

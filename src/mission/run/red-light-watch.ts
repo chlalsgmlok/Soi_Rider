@@ -22,8 +22,9 @@ export class RedLightWatch {
   constructor(private readonly data: CityData) {}
 
   /** node id when the rider just ran a red light this step, else −1 */
-  update(p: Pick<PlayerState, 'pos' | 'speed' | 'laneId' | 'counterflow'>, signal: SignalLookup): number {
-    if (p.laneId >= 0 && p.laneId !== this.lane && !p.counterflow && p.speed > ARM_SPEED) {
+  update(p: Pick<PlayerState, 'pos' | 'speed' | 'laneId' | 'counterflow' | 'centerline'>, signal: SignalLookup): number {
+    const against = p.counterflow || p.centerline === true; // riding against the lane, penalised or not
+    if (p.laneId >= 0 && p.laneId !== this.lane && !against && p.speed > ARM_SPEED) {
       const l = this.data.lanes[p.laneId];
       if (this.endNode(l).signal) {
         this.lane = l.id;
@@ -38,7 +39,7 @@ export class RedLightWatch {
     this.before = d;
     if (crossed) {
       this.lane = -1;
-      if (lateral > CORRIDOR || p.counterflow) return -1;
+      if (lateral > CORRIDOR || against) return -1;
       const node = this.endNode(l);
       const sv = signal(node.id);
       const axis = approachAxis(this.data.edges[l.edge].dir);

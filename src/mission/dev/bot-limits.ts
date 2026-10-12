@@ -96,7 +96,7 @@ export function obstacleSpeed(
 
 /** stops the bot at the stop line of a red / amber signal on the lane it follows (Infinity = go) */
 export function signalSpeed(s: PlayerState, city: CityQuery, traffic: TrafficQuery): number {
-  if (s.counterflow) return Infinity;
+  if (s.counterflow || s.centerline) return Infinity; // riding against the lane (also when tolerated by the centre line)
   let l: Lane | null = s.laneId >= 0 ? city.data.lanes[s.laneId] : null;
   if (!l) {
     // filtering between lanes: the nearest lane running the bike's way

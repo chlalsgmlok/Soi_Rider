@@ -5,6 +5,7 @@ export * from './save-repair';
 export * from './save-store';
 export * from './loadout-items';
 export * from './economy';
+export * from './fuel-regen';
 export * from './earnings';
 export * from './grade';
 export * from './forecast';

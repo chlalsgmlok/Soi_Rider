@@ -30,7 +30,7 @@ export function demoSave(loadout: Loadout): SaveData {
 /** `gate` = the first-visit "press any key" state instead of the menu */
 export function showTitleUi(save: SaveData, gate: boolean): void {
   setTitleGate(gate);
-  ui().show('title', { save, onStart: noop, onGarage: noop, onShop: noop, onSettings: noop }, 'none');
+  ui().show('title', { save, onStart: noop, onGarage: noop, onShop: noop, onRanking: noop, onSettings: noop }, 'none');
 }
 
 export function showGarageUi(save: SaveData, scene: { applyLoadout(l: Loadout): void; rotate(d: number): void }): void {

@@ -10,6 +10,7 @@ export function showTitle(ctx: AppCtx, transition: Transition = 'wipe'): void {
     onGarage: () => ctx.nav.garage(),
     onShop: () => ctx.nav.shop(() => ctx.nav.title()),
     onSettings: () => ctx.nav.settings(),
+    onRanking: () => ctx.nav.ranking(() => ctx.nav.title()),
   }, transition, {
     onCovered: () => {
       ctx.endSession();

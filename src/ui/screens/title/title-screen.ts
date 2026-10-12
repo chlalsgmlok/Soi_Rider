@@ -1,6 +1,6 @@
 /**
  * Title (TitleProps): transparent centre over the live 3D diorama, logo lockup top-left, chunky toy menu bottom-left
- * (시작 / 차고 / 상점 / 설정), ฿ + ⛽ wallets top-right, version/credits bottom-right.
+ * (시작 / 차고 / 상점 / 순위 / 설정), ฿ + ⛽ wallets top-right, version/credits bottom-right.
  * First visit per session shows a pulsing "아무 키나 누르세요" gate: any key, click, tap or gamepad OK opens the menu.
  */
 import './title.css';
@@ -51,8 +51,9 @@ export function mountTitle(ctx: ScreenContext<'title'>): ScreenView<'title'> {
   });
   const garage = button({ label: '차고', icon: 'helmet', variant: 'secondary', size: 'lg', block: true, onClick: () => ctx.props().onGarage() });
   const shop = button({ label: '상점', icon: 'cart', variant: 'secondary', size: 'lg', block: true, onClick: () => ctx.props().onShop() });
+  const ranking = button({ label: '순위', icon: 'trophy', variant: 'secondary', size: 'md', block: true, onClick: () => ctx.props().onRanking() });
   const settings = button({ label: '설정', icon: 'settings', variant: 'ghost', size: 'md', block: true, onClick: () => ctx.props().onSettings() });
-  const items = [start, h('div.title__menu-row', garage, shop), settings];
+  const items = [start, h('div.title__menu-row', garage, shop), h('div.title__menu-row', ranking, settings)];
   const menu = h('nav.title__menu', { aria: { label: '메인 메뉴' } }, curbDivider('vertical'), h('div.title__menu-col', items));
   const record = chip({ text: recordText(p.save), icon: 'trophy', tone: p.save.bestScore > 0 ? 'warn' : 'neutral', class: 'title__record' });
   const top = h('div.title__top', wallets.el, record);

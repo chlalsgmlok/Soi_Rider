@@ -1,6 +1,7 @@
 import { RIDE } from '../core/config/bikes';
+import { SCORE } from '../core/config/scoring';
 import { clamp, lerp } from '../core/math2d';
-import { type BikeStats, type LaneHit, type PlayerState, Surface, type SurfaceKind, type Vec2 } from '../core/types';
+import { type BikeStats, type LaneHit, type PlayerState, type RoadEdge, Surface, type SurfaceKind, type Vec2 } from '../core/types';
 
 /** What the road gives the bike each step (docs/ARCHITECTURE.md › player › BikePhysics.step). */
 export interface RideEnv {
@@ -11,6 +12,8 @@ export interface RideEnv {
   extraWidth: number;
   /** lane lookup for counterflow detection (CityQuery.nearestLane) */
   nearestLane?: (p: Vec2, maxDist?: number) => LaneHit | null;
+  /** road edges (CityQuery.edge): the centre-line grace needs the median width and one-way flag */
+  edge?: (id: number) => RoadEdge;
   /** 0..1 extra mass on board (a passenger ≈ 0.6): softer acceleration, longer braking */
   load?: number;
 }
@@ -41,17 +44,33 @@ export function laneStatus(s: PlayerState, env: RideEnv): void {
   if (s.surface === Surface.Intersection) return;
   if (!env.nearestLane || !ROADLIKE.has(s.surface)) {
     s.counterflow = false;
+    s.centerline = false;
     s.laneId = -1;
     return;
   }
   const hit = env.nearestLane(s.pos, 6);
   if (!hit || hit.dist > hit.lane.width / 2 + 0.3) {
     s.counterflow = false;
+    s.centerline = false;
     s.laneId = -1;
     return;
   }
   s.laneId = hit.lane.id;
   const dir = Math.sign(s.speed) || 1;
   const along = (Math.sin(s.heading) * hit.lane.dir.x + Math.cos(s.heading) * hit.lane.dir.z) * dir;
-  s.counterflow = Math.abs(s.speed) > 1 && along < -0.35;
+  const against = Math.abs(s.speed) > 1 && along < -0.35;
+  const hugging = against && nearCentreline(hit, env);
+  s.counterflow = against && !hugging;
+  s.centerline = hugging;
+}
+
+/**
+ * The bike is within SCORE.counterflowGraceM of the yellow centre line (or the median edge) of a two-way road — the
+ * Bangkok habit of slipping past a queue along the line. One-way roads have no centre line: no grace there.
+ */
+function nearCentreline(hit: LaneHit, env: RideEnv): boolean {
+  const e = env.edge?.(hit.lane.edge);
+  if (!e || e.oneWay) return false;
+  const fromCentre = Math.abs(hit.lane.offset + (hit.lane.forward ? hit.lateral : -hit.lateral));
+  return fromCentre - e.median / 2 <= SCORE.counterflowGraceM;
 }

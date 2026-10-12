@@ -84,6 +84,7 @@ export function demoState(t: number, anchors: DemoAnchors, promptAt: number | nu
     prompt: pp >= 0 && pp < 8 ? { ...DEMO_PROMPT, progress: 1 - pp / 8 } : null,
     cameraMode: t % 16 < 8 ? 'auto' : 'diorama',
     counterflow: cyc > 7 && cyc < 9.5,
+    centerline: cyc > 4 && cyc < 6.5,
     onSidewalk: false,
     tucking: leftCm < 12,
     minimap: { playerPos: pos, playerHeading: heading, target: { x: 70, z: 260 }, route },
